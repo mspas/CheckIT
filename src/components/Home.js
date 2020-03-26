@@ -6,6 +6,7 @@ import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import SignIn from "./Sign-in";
 import Register from "./Register";
 import logo from "../assets/coronaS.png";
+import AuthService from "../services/auth.service";
 
 class Home extends React.Component {
   constructor(props) {
@@ -14,6 +15,11 @@ class Home extends React.Component {
     this.state = {
       active: false
     };
+    this._auth = new AuthService();
+  }
+
+  componentDidMount() {
+    if (this._auth.loggedIn()) this.props.history.replace("/");
   }
 
   toggleClass() {
@@ -57,8 +63,8 @@ class Home extends React.Component {
             <div
               className={this.state.active ? "slope slope1" : "slope slope0"}
             ></div>
-            {!this.state.active && <SignIn />}
-            {this.state.active && <Register />}
+            {!this.state.active && <SignIn history={this.props.history} />}
+            {this.state.active && <Register history={this.props.history} />}
             <div className="slope2"></div>
           </div>
           <div className="footer_panel row">
