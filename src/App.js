@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, BrowserRouter } from "react-router-dom";
+import { Route, BrowserRouter, Redirect } from "react-router-dom";
 import "./App.sass";
 import SignIn from "./components/Home";
 import Dashboard from "./components/Dashboard";
@@ -10,8 +10,9 @@ function App() {
       <main>
         <BrowserRouter>
           <div>
-            <Route path="/login" component={SignIn} exact />
-            <Route path="/" component={Dashboard} />
+            <Route exact path="/login" component={SignIn} />
+            <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
           </div>
         </BrowserRouter>
       </main>

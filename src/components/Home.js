@@ -7,6 +7,7 @@ import SignIn from "./Sign-in";
 import Register from "./Register";
 import logo from "../assets/coronaS.png";
 import AuthService from "../services/auth.service";
+import { Container, Row, Col } from "react-bootstrap";
 
 class Home extends React.Component {
   constructor(props) {
@@ -29,10 +30,10 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div className="container center">
+      <Container className="center">
         <div className="sign_in_panel">
-          <div className="row panel_navbar">
-            <div className="col">
+          <Row className="panel_navbar">
+            <Col>
               <div
                 className={
                   !this.state.active ? "panel_nav" : "panel_nav nav_inactive"
@@ -42,8 +43,8 @@ class Home extends React.Component {
                 <FontAwesomeIcon className="panel_icon" icon={faUserTie} />
                 <p>Login</p>
               </div>
-            </div>
-            <div className="col">
+            </Col>
+            <Col>
               <div
                 className={
                   this.state.active ? "panel_nav" : "panel_nav nav_inactive"
@@ -53,8 +54,8 @@ class Home extends React.Component {
                 <FontAwesomeIcon className="panel_icon" icon={faUserPlus} />
                 <p>Register</p>
               </div>
-            </div>
-          </div>
+            </Col>
+          </Row>
           <div
             className={
               this.state.active ? "row panel_content tet" : "row panel_content"
@@ -67,18 +68,18 @@ class Home extends React.Component {
             {this.state.active && <Register history={this.props.history} />}
             <div className="slope2"></div>
           </div>
-          <div className="footer_panel row">
-            <div className="col center">
+          <Row className="footer_panel">
+            <Col className="center">
               <img src={logo} alt="Logo" height={50} />
-            </div>
-            <div className="col">
+            </Col>
+            <Col>
               <p>
                 Attendance Tracker <span>@2020</span>
               </p>
-            </div>
-          </div>
+            </Col>
+          </Row>
         </div>
-      </div>
+      </Container>
     );
   }
 }

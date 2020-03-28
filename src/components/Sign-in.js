@@ -24,7 +24,7 @@ class SignIn extends React.Component {
     this._auth
       .login(this.state.username, this.state.password)
       .then(res => {
-        this.props.history.replace("/");
+        this.props.history.replace("/dashboard");
       })
       .catch(err => {
         alert(err);

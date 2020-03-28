@@ -1,0 +1,50 @@
+@import '../_variables'
+@import '../_mixins'
+    
+.main
+    height: 100vh
+    padding-top: 15vh
+    .app-info
+        position: relative
+        text-align: right
+        img 
+            position: absolute
+            left: 5px
+            bottom: -5px
+    .main-container
+        width: 100%
+        min-height: 300px
+        background: #fff
+        box-shadow: 3px 3px 17px 1px #0000006e
+        .navbar
+            padding: 0
+            min-height: 66px
+            width: 100%
+            padding-top: 5px
+            background: $blue !important
+            color: #fff
+            .navbar-collapse
+                padding-top: 5px
+                .inline
+                    display: inline-block
+                .nav-elem
+                    cursor: pointer
+                    display: inline-block
+                    height: 100%
+                    padding: 20px
+                    letter-spacing: 2px
+                    font-size: 0.7em
+                    transition: 0.5s
+                    &:hover
+                        background: #406277
+                        color: #f8eded
+                .active
+                    cursor: default
+                    background: #fff
+                    color: #000
+                    border-radius: 15px 15px 0 0
+                    &:hover
+                        background: #fff
+                        color: #000
+    .main-content
+        padding: 50px 20px
