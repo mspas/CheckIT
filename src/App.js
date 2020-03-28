@@ -1,8 +1,8 @@
 import React from "react";
 import { Route, BrowserRouter, Redirect } from "react-router-dom";
 import "./App.sass";
-import SignIn from "./components/Home";
-import Dashboard from "./components/Dashboard";
+import SignIn from "./components/Home/Sign-in";
+import Dashboard from "./components/Dashboard/Dashboard";
 
 function App() {
   return (

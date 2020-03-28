@@ -1,9 +1,8 @@
 import React from "react";
-import "../styles/dashboard.sass";
-import AuthService from "../services/auth.service";
-import ApiService from "../services/api.service";
-import withAuth from "../services/auth-guard.service";
-import logo from "../assets/coronaS.png";
+import "../../styles/dashboard.sass";
+import AuthService from "../../services/auth.service";
+import withAuth from "../../services/auth-guard.service";
+import logo from "../../assets/coronaS.png";
 import NavLink from "./NavLink";
 import DashboardContent from "./DashboardContent";
 import { Link } from "react-scroll";
@@ -13,7 +12,6 @@ class Dashboard extends React.Component {
   constructor() {
     super();
     this._auth = new AuthService();
-    this._api = new ApiService();
 
     let lecturer_id = 0;
 
@@ -25,15 +23,9 @@ class Dashboard extends React.Component {
         { name: "My courses", active: true },
         { name: "New course", active: false },
         { name: "Settings", active: false }
-      ],
-      courses: []
+      ]
     };
 
-    this._api.getCourses(lecturer_id).then(res => {
-      this.setState({ courses: res, isLoading: false });
-    });
-
-    //console.log("chuj123", JSON.stringify(this.state.courses));
     this.handleLinkClick = this.handleLinkClick.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
   }
@@ -108,7 +100,6 @@ class Dashboard extends React.Component {
           </Navbar>
           <DashboardContent
             history={this.props.history}
-            courses={this.state.courses}
             linksData={this.state.linksData}
             isLoading={this.state.isLoading}
           />

@@ -1,9 +1,9 @@
 import React from "react";
-import "../styles/sign-in.sass";
+import "../../styles/sign-in.sass";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserAlt } from "@fortawesome/free-solid-svg-icons";
 import { faKey } from "@fortawesome/free-solid-svg-icons";
-import AuthService from "../services/auth.service";
+import AuthService from "../../services/auth.service";
 
 class SignIn extends React.Component {
   constructor(props) {

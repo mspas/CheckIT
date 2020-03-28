@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/dashboard.sass";
+import "../../styles/dashboard.sass";
 
 class NavLink extends React.Component {
   constructor(props) {

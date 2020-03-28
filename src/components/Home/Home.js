@@ -1,12 +1,12 @@
 import React from "react";
-import "../styles/home.sass";
+import "../../styles/home.sass";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserTie } from "@fortawesome/free-solid-svg-icons";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import SignIn from "./Sign-in";
 import Register from "./Register";
 import logo from "../assets/coronaS.png";
-import AuthService from "../services/auth.service";
+import AuthService from "../../services/auth.service";
 import { Container, Row, Col } from "react-bootstrap";
 
 class Home extends React.Component {

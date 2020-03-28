@@ -101,21 +101,38 @@ export default class ApiService {
   }
 
   getCourses(lecturer_id) {
-    // Get a token from api server using the fetch api
-    /*return this.fetch(`${this.domain}/login`, {
-            method: 'POST',
-            body: JSON.stringify({
-                username,
-                password
-            })
-        }).then(res => {
-            this.setToken(res.token) // Setting the token in localStorage
-            return Promise.resolve(res);
-        })*/
     let res = [];
     courses.array.forEach(element => {
-      if (element.lecturer_id == lecturer_id) res.push(element);
+      if (element.lecturer_id === lecturer_id) res.push(element);
     });
     return Promise.resolve(res);
+  }
+
+  getLectures(course_id) {
+    let res = [];
+    lectures.array.forEach(element => {
+      if (element.course_id === course_id) res.push(element);
+    });
+    return Promise.resolve(res);
+  }
+
+  getUser(user_id) {
+    users.array.forEach(element => {
+      if (element.user_id === user_id) return element;
+    });
+  }
+
+  getPresence(lecture_id) {
+    let res = [];
+    presence.array.forEach(element => {
+      if (element.lecture_id === lecture_id) res.push(element);
+    });
+    return Promise.resolve(res);
+  }
+
+  getLectureHalls(lecturehall_id) {
+    return lecture_halls.array.forEach(element => {
+      if (element.lecturehall_id === lecturehall_id) return element;
+    });
   }
 }

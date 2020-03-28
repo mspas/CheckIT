@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/register.sass";
+import "../../styles/register.sass";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserAlt } from "@fortawesome/free-solid-svg-icons";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
