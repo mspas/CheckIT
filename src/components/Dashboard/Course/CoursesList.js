@@ -1,8 +1,8 @@
 import React from "react";
-import "../../styles/course-list.sass";
+import "../../../styles/course-list.sass";
 import { Link } from "react-scroll";
-import LectureList from "./LectureList";
-import ApiService from "../../services/api.service";
+import ApiService from "../../../services/api.service";
+import LectureList from "./Lecture/LectureList";
 
 class CoursesList extends React.Component {
   constructor(props) {

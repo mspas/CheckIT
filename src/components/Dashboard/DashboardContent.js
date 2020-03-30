@@ -1,6 +1,6 @@
 import React from "react";
 import "../../styles/dashboard.sass";
-import CoursesList from "./CoursesList";
+import CoursesList from "./Course/CoursesList";
 import ApiService from "../../services/api.service";
 
 class DashboardContent extends React.Component {

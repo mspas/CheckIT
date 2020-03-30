@@ -6,14 +6,12 @@ import logo from "../../assets/coronaS.png";
 import NavLink from "./NavLink";
 import DashboardContent from "./DashboardContent";
 import { Link } from "react-scroll";
-import { Navbar, Container, NavDropdown, Nav, Dropdown } from "react-bootstrap";
+import { Navbar, Container, Nav } from "react-bootstrap";
 
 class Dashboard extends React.Component {
   constructor() {
     super();
     this._auth = new AuthService();
-
-    let lecturer_id = 0;
 
     this.state = {
       logged: localStorage.getItem("id_token"),

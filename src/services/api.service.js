@@ -1,4 +1,4 @@
-import decode from "jwt-decode";
+//import decode from "jwt-decode";
 
 const courses = {
   array: [
@@ -82,6 +82,8 @@ const users = {
 const presence = {
   array: [
     { id: 0, user_id: 0, lecture_id: 0 },
+    { id: 0, user_id: 1, lecture_id: 0 },
+    { id: 0, user_id: 2, lecture_id: 0 },
     { id: 1, user_id: 0, lecture_id: 1 },
     { id: 2, user_id: 0, lecture_id: 3 },
     { id: 3, user_id: 1, lecture_id: 1 },
@@ -94,10 +96,13 @@ const presence = {
 };
 
 export default class ApiService {
-  // Initializing important variables
   constructor(domain) {
     this.domain = domain || "http://localhost:8080"; // API server domain
     this.getCourses = this.getCourses.bind(this);
+    this.getLectures = this.getLectures.bind(this);
+    this.getUsersForLecture = this.getUsersForLecture.bind(this);
+    this.getPresence = this.getPresence.bind(this);
+    this.getLectureHalls = this.getLectureHalls.bind(this);
   }
 
   getCourses(lecturer_id) {
@@ -116,10 +121,8 @@ export default class ApiService {
     return Promise.resolve(res);
   }
 
-  getUser(user_id) {
-    users.array.forEach(element => {
-      if (element.user_id === user_id) return element;
-    });
+  getUsersForLecture() {
+    return Promise.resolve(users.array);
   }
 
   getPresence(lecture_id) {
@@ -132,7 +135,8 @@ export default class ApiService {
 
   getLectureHalls(lecturehall_id) {
     return lecture_halls.array.forEach(element => {
-      if (element.lecturehall_id === lecturehall_id) return element;
+      if (element.lecturehall_id === lecturehall_id)
+        return Promise.resolve(element);
     });
   }
 }

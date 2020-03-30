@@ -2,15 +2,6 @@ import React from "react";
 import "../../styles/dashboard.sass";
 
 class NavLink extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  handleLogout() {
-    this._auth.logout();
-    this.props.history.replace("/login");
-  }
-
   render() {
     return (
       <li
