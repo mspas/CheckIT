@@ -5,7 +5,7 @@ import { faUserTie } from "@fortawesome/free-solid-svg-icons";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import SignIn from "./Sign-in";
 import Register from "./Register";
-import logo from "../assets/coronaS.png";
+import logo from "../../assets/coronaS.png";
 import AuthService from "../../services/auth.service";
 import { Container, Row, Col } from "react-bootstrap";
 
@@ -31,34 +31,34 @@ class Home extends React.Component {
   render() {
     return (
       <Container className="center">
-        <div className="sign_in_panel">
-          <Row className="panel_navbar">
+        <div className="sign-in-panel">
+          <Row className="panel-navbar">
             <Col>
               <div
                 className={
-                  !this.state.active ? "panel_nav" : "panel_nav nav_inactive"
+                  !this.state.active ? "panel-nav" : "panel-nav nav-inactive"
                 }
                 onClick={this.toggleClass}
               >
-                <FontAwesomeIcon className="panel_icon" icon={faUserTie} />
+                <FontAwesomeIcon className="panel-icon" icon={faUserTie} />
                 <p>Login</p>
               </div>
             </Col>
             <Col>
               <div
                 className={
-                  this.state.active ? "panel_nav" : "panel_nav nav_inactive"
+                  this.state.active ? "panel-nav" : "panel-nav nav-inactive"
                 }
                 onClick={this.toggleClass}
               >
-                <FontAwesomeIcon className="panel_icon" icon={faUserPlus} />
+                <FontAwesomeIcon className="panel-icon" icon={faUserPlus} />
                 <p>Register</p>
               </div>
             </Col>
           </Row>
           <div
             className={
-              this.state.active ? "row panel_content tet" : "row panel_content"
+              this.state.active ? "row panel-content tet" : "row panel-content"
             }
           >
             <div
@@ -68,7 +68,7 @@ class Home extends React.Component {
             {this.state.active && <Register history={this.props.history} />}
             <div className="slope2"></div>
           </div>
-          <Row className="footer_panel">
+          <Row className="footer-panel">
             <Col className="center">
               <img src={logo} alt="Logo" height={50} />
             </Col>

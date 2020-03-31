@@ -53,6 +53,69 @@ const lectures = {
       lecturer_id: 0,
       lectureHall_id: 1,
       date: "2020-04-30"
+    },
+    {
+      id: 6,
+      course_id: 0,
+      lecturer_id: 0,
+      lectureHall_id: 0,
+      date: "2020-04-23"
+    },
+    {
+      id: 7,
+      course_id: 0,
+      lecturer_id: 0,
+      lectureHall_id: 0,
+      date: "2020-04-24"
+    },
+    {
+      id: 8,
+      course_id: 0,
+      lecturer_id: 0,
+      lectureHall_id: 0,
+      date: "2020-04-25"
+    },
+    {
+      id: 9,
+      course_id: 0,
+      lecturer_id: 0,
+      lectureHall_id: 0,
+      date: "2020-04-26"
+    },
+    {
+      id: 10,
+      course_id: 0,
+      lecturer_id: 0,
+      lectureHall_id: 0,
+      date: "2020-04-27"
+    },
+    {
+      id: 11,
+      course_id: 0,
+      lecturer_id: 0,
+      lectureHall_id: 0,
+      date: "2020-04-28"
+    },
+    {
+      id: 12,
+      course_id: 0,
+      lecturer_id: 0,
+      lectureHall_id: 0,
+      date: "2020-04-29"
+    },
+    {
+      id: 13,
+      course_id: 0,
+      lecturer_id: 0,
+      lectureHall_id: 0,
+      date: "2020-04-30"
+    },
+    {
+      id: 14,
+      course_id: 0,
+      lecturer_id: 0,
+      lectureHall_id: 0,
+      date: "2020-05-21"
     }
   ]
 };
@@ -101,6 +164,7 @@ export default class ApiService {
     this.getCourses = this.getCourses.bind(this);
     this.getLectures = this.getLectures.bind(this);
     this.getUsersForLecture = this.getUsersForLecture.bind(this);
+    this.getUsers = this.getUsers.bind(this);
     this.getPresence = this.getPresence.bind(this);
     this.getLectureHalls = this.getLectureHalls.bind(this);
   }
@@ -122,6 +186,10 @@ export default class ApiService {
   }
 
   getUsersForLecture() {
+    return Promise.resolve(users.array);
+  }
+
+  getUsers() {
     return Promise.resolve(users.array);
   }
 

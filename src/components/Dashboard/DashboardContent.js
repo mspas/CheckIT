@@ -1,7 +1,10 @@
 import React from "react";
 import "../../styles/dashboard.sass";
-import CoursesList from "./Course/CoursesList";
 import ApiService from "../../services/api.service";
+import CoursesList from "./Course/CoursesList";
+import NewCourse from "./NewCourse/NewCourse";
+import Settings from "./Settings/Settings";
+import ManageStudents from "./Students/ManageStudents";
 
 class DashboardContent extends React.Component {
   constructor() {
@@ -11,28 +14,39 @@ class DashboardContent extends React.Component {
     let lecturer_id = 0;
 
     this.state = {
-      isLoading: true,
-      courses: []
+      coursesLoading: true,
+      usersLoading: true,
+      courses: [],
+      users: []
     };
     this._api.getCourses(lecturer_id).then(res => {
-      this.setState({ courses: res, isLoading: false });
+      this.setState({ courses: res, coursesLoading: false });
+    });
+    this._api.getUsersForLecture().then(res => {
+      this.setState({ users: res, usersLoading: false });
     });
   }
 
   render() {
-    if (this.state.isLoading) {
-      return <p>Loading ...</p>;
-    }
     return (
       <div className="main-content">
         {this.props.linksData[0].active && (
-          <CoursesList courses={this.state.courses} />
+          <CoursesList
+            courses={this.state.courses}
+            isLoading={this.state.coursesLoading}
+          />
         )}
         {this.props.linksData[1].active && (
-          <CoursesList courses={this.state.courses} />
+          <NewCourse
+            users={this.state.users}
+            isLoading={this.state.usersLoading}
+          />
         )}
         {this.props.linksData[2].active && (
-          <CoursesList courses={this.state.courses} />
+          <ManageStudents users={this.state.users} />
+        )}
+        {this.props.linksData[3].active && (
+          <Settings courses={this.state.courses} />
         )}
       </div>
     );

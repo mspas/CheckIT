@@ -7,11 +7,15 @@ import NavLink from "./NavLink";
 import DashboardContent from "./DashboardContent";
 import { Link } from "react-scroll";
 import { Navbar, Container, Nav } from "react-bootstrap";
+import ApiService from "../../services/api.service";
 
 class Dashboard extends React.Component {
   constructor() {
     super();
     this._auth = new AuthService();
+    this._api = new ApiService();
+
+    let lecturer_id = 0;
 
     this.state = {
       logged: localStorage.getItem("id_token"),
@@ -20,9 +24,17 @@ class Dashboard extends React.Component {
       linksData: [
         { name: "My courses", active: true },
         { name: "New course", active: false },
+        { name: "Manage students", active: false },
         { name: "Settings", active: false }
       ]
     };
+
+    this._api.getCourses(lecturer_id).then(res => {
+      this.setState({ courses: res, coursesLoading: false });
+    });
+    this._api.getLectures(lecturer_id).then(res => {
+      this.setState({ allLectures: res, isLoading: false });
+    });
 
     this.handleLinkClick = this.handleLinkClick.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
@@ -52,6 +64,7 @@ class Dashboard extends React.Component {
       linksData: [
         { name: "My courses", active: false },
         { name: "New course", active: false },
+        { name: "Manage students", active: false },
         { name: "Settings", active: false }
       ]
     });
@@ -69,7 +82,7 @@ class Dashboard extends React.Component {
       );
     });
     return (
-      <Container className="main">
+      <Container className="content">
         <div className="app-info">
           <img src={logo} alt="Logo" height={50} />
           <span>Logged as {this.state.logged}</span>

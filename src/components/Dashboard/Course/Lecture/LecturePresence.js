@@ -1,10 +1,10 @@
 import React from "react";
 import { Table } from "react-bootstrap";
 
-class LecturePressence extends React.Component {
+class LecturePresence extends React.Component {
   isPresent(user_id) {
-    for (let i = 0; i < this.props.pressence.length; i++) {
-      const element = this.props.pressence[i];
+    for (let i = 0; i < this.props.presence.length; i++) {
+      const element = this.props.presence[i];
       if (element.user_id === user_id) {
         return true;
       }
@@ -13,7 +13,7 @@ class LecturePressence extends React.Component {
   }
 
   render() {
-    if (this.props.isLoadingUsers || this.props.isLoadingPressence) {
+    if (this.props.isLoadingUsers || this.props.isLoadingPresence) {
       return <p>Loading ...</p>;
     }
 
@@ -43,4 +43,4 @@ class LecturePressence extends React.Component {
     );
   }
 }
-export default LecturePressence;
+export default LecturePresence;

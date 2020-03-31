@@ -1,0 +1,52 @@
+@import '../_variables'
+@import '../_animations'
+
+    
+.list
+    padding: 25px 2vw
+    width: 90%
+    .list-elem
+        position: relative
+        max-width: 100%
+        margin: 25px
+        display: block
+        padding: 25px 20px
+        border: 2px solid #111
+        font-weight: 600
+        cursor: pointer
+        .panel-icon
+            position: relative
+            z-index: 2
+            margin-left: 25px
+            font-size: 20px
+            float: right
+            &:hover
+                color: $blue
+                animation: spin 0.5s ease-in-out forwards
+        .course-name 
+            position: relative
+            z-index: 2
+        &::before
+            content: ''
+            position: absolute
+            top: -2px
+            bottom: -2px
+            right: -2px
+            width: calc( 100% + 2px )
+            height: calc( 100% + 4px )
+            background: $primary
+            transition: 0.4s ease-in-out
+        &:hover::before
+            width: 0px
+        &::after
+            content: ''
+            position: absolute
+            top: 0
+            right: -2px
+            width: 5px
+            height: 100%
+            background: $primary
+            transition: 0.2s ease-in 0.4s
+            transform: scaleY(1)
+        &:hover::after
+            transform: scaleY(0)

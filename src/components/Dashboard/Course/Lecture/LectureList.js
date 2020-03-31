@@ -1,8 +1,8 @@
 import React from "react";
-import "../../../../styles/lecture-list.sass";
+import "../../../../styles/course.sass";
 import { Link } from "react-scroll";
 import ApiService from "../../../../services/api.service";
-import LecturePressence from "./LecturePressence";
+import LecturePresence from "./LecturePresence";
 
 class LectureList extends React.Component {
   constructor(props) {
@@ -11,10 +11,10 @@ class LectureList extends React.Component {
 
     this.state = {
       isLoadingUsers: true,
-      isLoadingPressence: true,
+      isLoadingPresence: true,
       clickedLectureId: -1,
       users: [],
-      pressence: []
+      presence: []
     };
     this.handleLinkClick = this.handleLinkClick.bind(this);
     this.handleBackClick = this.handleBackClick.bind(this);
@@ -29,7 +29,7 @@ class LectureList extends React.Component {
       this.setState({ users: res, isLoadingUsers: false });
     });
     this._api.getPresence(data.id).then(res => {
-      this.setState({ pressence: res, isLoadingPressence: false });
+      this.setState({ presence: res, isLoadingPresence: false });
     });
   }
 
@@ -47,31 +47,31 @@ class LectureList extends React.Component {
     let lectures = this.props.lectures.map((data, index) => {
       return (
         <Link
-          className="lecture-elem"
+          className="list-elem"
           to=""
           key={index}
           onClick={this.handleLinkClick.bind(null, data)}
         >
-          {data.date}
+          <span className="course-name">{data.date}</span>
         </Link>
       );
     });
 
     return (
       <div>
-        <ul className="lecture-list">
+        <ul className="list">
           {this.state.clickedLectureId === -1 && lectures}
         </ul>
         {this.state.clickedLectureId !== -1 && (
           <div>
-            <Link className="lecture-elem" to="" onClick={this.handleBackClick}>
+            <Link to="" onClick={this.handleBackClick}>
               -back-
             </Link>
-            <LecturePressence
-              pressence={this.state.pressence}
+            <LecturePresence
+              presence={this.state.presence}
               users={this.state.users}
               isLoadingUsers={this.state.isLoadingUsers}
-              isLoadingPressence={this.state.isLoadingPressence}
+              isLoadingPresence={this.state.isLoadingPresence}
             />
           </div>
         )}

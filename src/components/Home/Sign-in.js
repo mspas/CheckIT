@@ -1,14 +1,15 @@
 import React from "react";
 import "../../styles/sign-in.sass";
+import { Form, Button, InputGroup } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserAlt } from "@fortawesome/free-solid-svg-icons";
-import { faKey } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
 import AuthService from "../../services/auth.service";
 
 class SignIn extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { username: "", password: "" };
+    this.state = { Email: "", Password: "" };
     this._auth = new AuthService();
   }
 
@@ -22,7 +23,7 @@ class SignIn extends React.Component {
   onSubmit = event => {
     event.preventDefault();
     this._auth
-      .login(this.state.username, this.state.password)
+      .login(this.state.Email, this.state.Password)
       .then(res => {
         this.props.history.replace("/dashboard");
       })
@@ -52,43 +53,53 @@ class SignIn extends React.Component {
 
   render() {
     return (
-      <form className="form-signin" onSubmit={this.onSubmit}>
-        <div className="input-group mb-3">
-          <div className="input-group-prepend">
-            <span className="input-group-text" id="basic-addon1">
-              <FontAwesomeIcon className="panel-icon" icon={faUserAlt} />
-            </span>
-          </div>
-          <input
-            type="text"
-            className="form-control"
-            name="username"
-            placeholder="Username"
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-            onChange={this.handleInputChange}
-          />
-        </div>
-        <div className="input-group mb-3">
-          <div className="input-group-prepend">
-            <span className="input-group-text" id="basic-addon1">
-              <FontAwesomeIcon className="panel-icon" icon={faKey} />
-            </span>
-          </div>
-          <input
-            type="password"
-            className="form-control"
-            name="password"
-            placeholder="Password"
-            aria-label="Password"
-            aria-describedby="basic-addon1"
-            onChange={this.handleInputChange}
-          />
-        </div>
-        <button type="submit" className="btn mb-2">
+      <Form className="form-signin" onSubmit={this.onSubmit}>
+        <Form.Group controlId="formEmail">
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text id="inputGroupPrepend">
+                <FontAwesomeIcon className="panel-icon" icon={faEnvelope} />
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control
+              type="text"
+              name="Email"
+              placeholder="Email"
+              aria-describedby="inputGroupPrepend"
+              onChange={this.handleInputChange}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please type your email address.
+            </Form.Control.Feedback>
+          </InputGroup>
+        </Form.Group>
+
+        <Form.Group controlId="formPassword">
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text id="inputGroupPrepend">
+                <FontAwesomeIcon className="panel-icon" icon={faLock} />
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control
+              type="password"
+              name="Password"
+              placeholder="Password"
+              aria-describedby="inputGroupPrepend"
+              onChange={this.handleInputChange}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please type your password.
+            </Form.Control.Feedback>
+          </InputGroup>
+        </Form.Group>
+
+        <Button variant="primary" type="submit">
           Login
-        </button>
-      </form>
+        </Button>
+      </Form>
     );
   }
 }

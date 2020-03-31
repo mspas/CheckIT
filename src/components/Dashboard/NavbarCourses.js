@@ -19,12 +19,14 @@ class CoursesList extends React.Component {
       clickedSettingsId: -1,
       selectedCourse: null,
       isLoading: true,
-      selectedLectures: [],
-      allStudents: [],
-      students: []
+      selectedLectures: []
     };
+
+    this._api.getCourses(lecturer_id).then(res => {
+      this.setState({ courses: res, coursesLoading: false });
+    });
     this._api.getLectures(lecturer_id).then(res => {
-      this.setState({ courses: res, isLoading: false });
+      this.setState({ allLectures: res, isLoading: false });
     });
 
     this.handleLinkClick = this.handleLinkClick.bind(this);
