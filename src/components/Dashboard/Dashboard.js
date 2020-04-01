@@ -2,12 +2,11 @@ import React from "react";
 import "../../styles/dashboard.sass";
 import AuthService from "../../services/auth.service";
 import withAuth from "../../services/auth-guard.service";
-import logo from "../../assets/coronaS.png";
-import NavLink from "./NavLink";
-import DashboardContent from "./DashboardContent";
+import NavbarCourses from "./NavbarCourses";
 import { Link } from "react-scroll";
-import { Navbar, Container, Nav } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import ApiService from "../../services/api.service";
+import LectureList from "./Course/Lecture/LectureList";
 
 class Dashboard extends React.Component {
   constructor() {
@@ -19,24 +18,29 @@ class Dashboard extends React.Component {
 
     this.state = {
       logged: localStorage.getItem("id_token"),
-      activeFlag: 0,
-      isLoading: true,
-      linksData: [
-        { name: "My courses", active: true },
-        { name: "New course", active: false },
-        { name: "Manage students", active: false },
-        { name: "Settings", active: false }
-      ]
+      lecturesLoading: true,
+      coursesLoading: true,
+      lectures: [],
+      activeFlags: []
     };
 
     this._api.getCourses(lecturer_id).then(res => {
-      this.setState({ courses: res, coursesLoading: false });
-    });
-    this._api.getLectures(lecturer_id).then(res => {
-      this.setState({ allLectures: res, isLoading: false });
+      let array = [];
+      if (res.length > 0) {
+        for (let i = 0; i < res.length; i++) {
+          array.push(false);
+        }
+      }
+      this.setState({
+        courses: res,
+        coursesLoading: false,
+        activeFlags: array
+      });
     });
 
-    this.handleLinkClick = this.handleLinkClick.bind(this);
+    this.handleCourseClick = this.handleCourseClick.bind(this);
+    this.deactivateAllLinks = this.deactivateAllLinks.bind(this);
+    this.handleLectures = this.handleLectures.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
   }
 
@@ -45,77 +49,63 @@ class Dashboard extends React.Component {
     this.props.history.replace("/login");
   }
 
-  handleLinkClick(index, event) {
-    let array = this.state.linksData;
-
-    array.forEach(element => {
-      element.active = false;
-    });
-    array[index].active = true;
-
-    this.setState({
-      activeFlag: index,
-      linksData: array
-    });
+  handleCourseClick(data, index) {
+    this.deactivateAllLinks(data.id, index);
   }
 
-  deactivateAllLinks() {
+  deactivateAllLinks(course_id, index) {
+    let array = this.state.activeFlags;
+    for (let i = 0; i < array.length; i++) {
+      array[i] = false;
+    }
+    this.setState(
+      {
+        activeFlags: array
+      },
+      () => {
+        this.handleLectures(course_id, index);
+      }
+    );
+  }
+
+  handleLectures(course_id, index) {
+    let array;
+    array = this.state.activeFlags;
+    array[index] = true;
     this.setState({
-      linksData: [
-        { name: "My courses", active: false },
-        { name: "New course", active: false },
-        { name: "Manage students", active: false },
-        { name: "Settings", active: false }
-      ]
+      activeFlags: array
+    });
+
+    this._api.getLectures(course_id).then(res => {
+      this.setState({ lectures: res, lecturesLoading: false });
     });
   }
 
   render() {
-    let links = this.state.linksData.map((data, index) => {
-      return (
-        <NavLink
-          onClick={this.handleLinkClick.bind(null, index)}
-          active={data.active}
-          name={data.name}
-          key={index}
-        />
-      );
-    });
     return (
-      <Container className="content">
-        <div className="app-info">
-          <img src={logo} alt="Logo" height={50} />
-          <span>Logged as {this.state.logged}</span>
-        </div>
-        <div className="main-container">
-          <Navbar
-            sticky="top"
-            id="navbar"
-            bg="light"
-            expand="lg"
-            className="navbar navbar-expand-lg navbar-light bg-light"
-            collapseOnSelect={true}
-          >
-            <Navbar.Toggle
-              className="ml-auto"
-              aria-controls="basic-navbar-nav"
+      <div>
+        <NavbarCourses
+          history={this.props.history}
+          courses={this.state.courses}
+          isLoading={this.state.coursesLoading}
+          activeFlags={this.state.activeFlags}
+          onCourseClick={this.handleCourseClick}
+        />
+        <Container className="content">
+          <div className="app-info">
+            <span>Logged as {this.state.logged}</span>
+            <Link to="" onClick={this.handleLogout}>
+              Logout
+            </Link>
+          </div>
+          <div className="main-container">
+            <LectureList
+              lectures={this.state.lectures}
+              isLoading={this.state.lecturesLoading}
             />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="ml-auto">
-                {links}
-                <Link className="nav-elem" to="" onClick={this.handleLogout}>
-                  Logout
-                </Link>
-              </Nav>
-            </Navbar.Collapse>
-          </Navbar>
-          <DashboardContent
-            history={this.props.history}
-            linksData={this.state.linksData}
-            isLoading={this.state.isLoading}
-          />
-        </div>
-      </Container>
+          </div>
+        </Container>
+      </div>
     );
   }
 }

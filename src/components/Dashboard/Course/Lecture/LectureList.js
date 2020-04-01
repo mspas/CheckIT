@@ -1,5 +1,5 @@
 import React from "react";
-import "../../../../styles/course.sass";
+import "../../../../styles/lecture.sass";
 import { Link } from "react-scroll";
 import ApiService from "../../../../services/api.service";
 import LecturePresence from "./LecturePresence";

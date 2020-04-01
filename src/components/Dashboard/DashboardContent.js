@@ -2,9 +2,6 @@ import React from "react";
 import "../../styles/dashboard.sass";
 import ApiService from "../../services/api.service";
 import CoursesList from "./Course/CoursesList";
-import NewCourse from "./NewCourse/NewCourse";
-import Settings from "./Settings/Settings";
-import ManageStudents from "./Students/ManageStudents";
 
 class DashboardContent extends React.Component {
   constructor() {
@@ -35,18 +32,6 @@ class DashboardContent extends React.Component {
             courses={this.state.courses}
             isLoading={this.state.coursesLoading}
           />
-        )}
-        {this.props.linksData[1].active && (
-          <NewCourse
-            users={this.state.users}
-            isLoading={this.state.usersLoading}
-          />
-        )}
-        {this.props.linksData[2].active && (
-          <ManageStudents users={this.state.users} />
-        )}
-        {this.props.linksData[3].active && (
-          <Settings courses={this.state.courses} />
         )}
       </div>
     );
