@@ -49,6 +49,25 @@ class SignIn extends React.Component {
       console.error(err);
       alert('Error logging in please try again');
     });*/
+    /*fetch('/api/authenticate', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => {
+      if (res.status === 200) {
+        console.log(JSON.stringify(res));
+      } else {
+        const error = new Error(res.error);
+        throw error;
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert('Error logging in please try again');
+    });*/
+    //fetch(`https://fairestdb.p.rapidapi.com/friend/friendModel/_id/${this.state.id}`,
   };
 
   render() {

@@ -2,10 +2,10 @@ import React from "react";
 import { Table } from "react-bootstrap";
 
 class LecturePresence extends React.Component {
-  isPresent(user_id) {
-    for (let i = 0; i < this.props.presence.length; i++) {
-      const element = this.props.presence[i];
-      if (element.user_id === user_id) {
+  isPresent(indeks) {
+    for (let i = 0; i < this.props.lectureData.students.length; i++) {
+      const element = this.props.lectureData.students[i];
+      if (element.indeks === indeks) {
         return true;
       }
     }
@@ -13,17 +13,19 @@ class LecturePresence extends React.Component {
   }
 
   render() {
-    if (this.props.isLoadingUsers || this.props.isLoadingPresence) {
+    if (this.props.isLoading) {
       return <p>Loading ...</p>;
     }
 
-    let students = this.props.users.map((data, index) => {
+    let students = this.props.students.map((data, index) => {
       return (
         <tr key={index}>
-          <td>{index}.</td>
+          <td>{index + 1}.</td>
           <td>{data.name}</td>
-          <td>{data.surname}</td>
-          <td>{this.isPresent(data.id) && "Yes"}</td>
+          <td>{data.indeks}</td>
+          <td>{data.email}</td>
+          <td>{data.presences}</td>
+          <td>{this.isPresent(data.indeks) && "Yes"}</td>
         </tr>
       );
     });
@@ -33,8 +35,10 @@ class LecturePresence extends React.Component {
         <thead>
           <tr>
             <th>#</th>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>Name</th>
+            <th>Indeks</th>
+            <th>Email</th>
+            <th>No of presence</th>
             <th>Present</th>
           </tr>
         </thead>

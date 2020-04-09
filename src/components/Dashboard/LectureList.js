@@ -1,7 +1,7 @@
 import React from "react";
-import "../../../../styles/lecture.sass";
+import "../../styles/lecture.sass";
 import { Link } from "react-scroll";
-import ApiService from "../../../../services/api.service";
+import ApiService from "../../services/api.service";
 import LecturePresence from "./LecturePresence";
 
 class LectureList extends React.Component {
@@ -10,11 +10,11 @@ class LectureList extends React.Component {
     this._api = new ApiService();
 
     this.state = {
+      url: "http://25.23.181.97:8090",
       isLoadingUsers: true,
-      isLoadingPresence: true,
+      isLoading: true,
       clickedLectureId: -1,
-      users: [],
-      presence: []
+      lectureData: null,
     };
     this.handleLinkClick = this.handleLinkClick.bind(this);
     this.handleBackClick = this.handleBackClick.bind(this);
@@ -22,20 +22,33 @@ class LectureList extends React.Component {
 
   handleLinkClick(data, event) {
     this.setState({
-      clickedLectureId: data.id
+      clickedLectureId: data.id,
     });
 
-    this._api.getUsersForLecture().then(res => {
-      this.setState({ users: res, isLoadingUsers: false });
-    });
-    this._api.getPresence(data.id).then(res => {
-      this.setState({ presence: res, isLoadingPresence: false });
-    });
+    fetch(this.state.url + "/api/lectures/" + "1" + "/details", {
+      /////////// HARDCODE !!!!!!!!!!!!!!!
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({ lectureData: json, isLoading: false });
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Error database fetch data: lecture data");
+      });
+
+    /*this._api.getLectureData(data.id).then((res) => {
+      this.setState({ lectureData: res, isLoading: false });
+    });*/
   }
 
   handleBackClick() {
     this.setState({
-      clickedLectureId: -1
+      clickedLectureId: -1,
     });
   }
 
@@ -59,19 +72,19 @@ class LectureList extends React.Component {
 
     return (
       <div>
-        <ul className="list">
+        <p>{this.props.courseData.courseCode}</p>
+        <div className="list">
           {this.state.clickedLectureId === -1 && lectures}
-        </ul>
+        </div>
         {this.state.clickedLectureId !== -1 && (
           <div>
             <Link to="" onClick={this.handleBackClick}>
               -back-
             </Link>
             <LecturePresence
-              presence={this.state.presence}
-              users={this.state.users}
-              isLoadingUsers={this.state.isLoadingUsers}
-              isLoadingPresence={this.state.isLoadingPresence}
+              lectureData={this.state.lectureData}
+              students={this.props.courseData.students}
+              isLoading={this.state.isLoading}
             />
           </div>
         )}
