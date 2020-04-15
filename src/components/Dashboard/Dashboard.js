@@ -20,15 +20,20 @@ class Dashboard extends React.Component {
       url: "http://25.23.181.97:8090",
       lecturer_id: 5,
       logged: localStorage.getItem("id_token"),
-      lecturesLoading: true,
+      lecturesLoading: false,
       coursesLoading: true,
       courses: [],
       courseData: null,
       lectures: [],
       activeFlags: [],
+      clickedLectureId: -1,
+      lectureData: null,
+      presenceLoading: true,
     };
 
     this.handleCourseClick = this.handleCourseClick.bind(this);
+    this.handleLectureClick = this.handleLectureClick.bind(this);
+    this.handleBackClick = this.handleBackClick.bind(this);
     this.handleLinks = this.handleLinks.bind(this);
     this.handleLectures = this.handleLectures.bind(this);
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
@@ -83,7 +88,41 @@ class Dashboard extends React.Component {
   }
 
   handleCourseClick(data, index) {
+    this.setState({
+      lecturesLoading: true,
+      clickedLectureId: -1,
+    });
     this.handleLinks(data.id, index);
+  }
+
+  handleLectureClick(data, event) {
+    fetch(this.state.url + "/api/lectures/" + data.id + "/details", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({
+          clickedLectureId: data.id,
+          lectureData: json,
+          presenceLoading: false,
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Error database fetch data: lecture data");
+      });
+
+    /*this._api.getLectureData(data.id).then((res) => {
+      this.setState({ lectureData: res, isLoading: false });
+    });*/
+  }
+  handleBackClick() {
+    this.setState({
+      clickedLectureId: -1,
+    });
   }
 
   handleLinks(course_id, index) {
@@ -109,7 +148,7 @@ class Dashboard extends React.Component {
       activeFlags: array,
     });
 
-    fetch(this.state.url + "/api/courses/" + "1" + "/details", {
+    fetch(this.state.url + "/api/courses/" + course_id + "/details", {
       /////////// HARDCODE !!!!!!!!!!!!!!!
       method: "GET",
       headers: {
@@ -120,7 +159,7 @@ class Dashboard extends React.Component {
       .then((json) => {
         this.setState({
           courseData: json,
-          lectures: this.state.courses[index].lectures,
+          lectures: this.state.courses[index],
           lecturesLoading: false,
         });
       })
@@ -144,13 +183,13 @@ class Dashboard extends React.Component {
         <CoursesSidebar
           history={this.props.history}
           courses={this.state.courses}
+          logged={this.state.logged}
           isLoading={this.state.coursesLoading}
           activeFlags={this.state.activeFlags}
           onCourseClick={this.handleCourseClick}
         />
         <Container className="content">
           <div className="app-info">
-            <span>Logged as {this.state.logged}</span>
             <Link to="" onClick={this.handleLogoutClick}>
               Logout
             </Link>
@@ -160,6 +199,11 @@ class Dashboard extends React.Component {
               courseData={this.state.courseData}
               lectures={this.state.lectures}
               isLoading={this.state.lecturesLoading}
+              presenceLoading={this.state.presenceLoading}
+              clickedLectureId={this.state.clickedLectureId}
+              lectureData={this.state.lectureData}
+              onLectureClick={this.handleLectureClick}
+              onBackClick={this.handleBackClick}
             />
           </div>
         </Container>

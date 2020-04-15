@@ -1,13 +1,28 @@
 import React from "react";
 import "../../styles/course.sass";
 import { Link } from "react-scroll";
+import { Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 class CoursesSidebar extends React.Component {
   render() {
     if (this.props.isLoading) {
-      return <p>Loading ...</p>;
+      return (
+        <div className="wrapper">
+          <div className="course-menu">
+            <div className="logo">logo</div>
+            <p className="title-text">Your courses</p>
+            <div className="spinner-wrap center">
+              <Spinner
+                animation="border"
+                variant="primary"
+                role="status"
+              ></Spinner>
+            </div>
+          </div>
+        </div>
+      );
     }
 
     let courses = this.props.courses.map((data, index) => {
@@ -29,7 +44,9 @@ class CoursesSidebar extends React.Component {
     return (
       <div className="wrapper">
         <div className="course-menu">
-          <p>logo</p>
+          <div className="logo">logo</div>
+          <p className="title-text logged-user">{this.props.logged}</p>
+          <p className="title-text">Your courses</p>
           <span>
             <FontAwesomeIcon className="panel-icon" icon={faBars} />
           </span>

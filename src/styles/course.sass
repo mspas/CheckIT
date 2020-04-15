@@ -1,17 +1,28 @@
 @import '../_variables'
 @import '../_animations'
   
-
-
 .wrapper
     display: flex
     position: relative
+    z-index: 111
     .course-menu
         position: fixed
         max-width: 350px
         height: 100vh
         background: $lighterblue
         box-shadow: 3px 3px 17px 1px #0000006e
+        .logo
+            padding: 10px 20px 10px 10px
+        .logged-user
+            margin: 0
+            padding-bottom: 0 !important
+            font-size: 0.8em
+        .title-text
+            text-align: right
+            padding: 10px 20px
+            letter-spacing: 2px
+        .spinner-wrap
+            width: 100%
         ul 
             padding: 0 25px
             li 
@@ -37,7 +48,7 @@
                         right: -2px
                         width: calc( 100% + 2px )
                         height: calc( 100% + 4px )
-                        background: $lighterblue
+                        background: $primary
                         transition: 0.4s ease-in-out
                     &:hover::before
                         width: 0px
@@ -48,7 +59,7 @@
                         right: -2px
                         width: 5px
                         height: 100%
-                        background: $lighterblue
+                        background: $primary
                         transition: 0.2s ease-in 0.4s
                         transform: scaleY(1)
                     &:hover::after
@@ -70,52 +81,3 @@
         @media screen and ( max-width: 1000px )
             position: absolute
             left: -275px
-
-
-
-
-
-
-.flex-column
-    position: fixed
-    max-width: 350px
-    height: 100vh
-    background: $lighterblue
-    box-shadow: 3px 3px 17px 1px #0000006e
-    .list-elem
-        position: relative
-        display: block !important
-        max-width: 100%
-        margin: 25px
-        padding: 25px 20px
-        color: #000
-        border: 2px solid #111
-        font-weight: 600
-        cursor: pointer
-        .course-name 
-            position: relative
-            z-index: 2
-        &::before
-            content: ''
-            position: absolute
-            top: -2px
-            bottom: -2px
-            right: -2px
-            width: calc( 100% + 2px )
-            height: calc( 100% + 4px )
-            background: $lighterblue
-            transition: 0.4s ease-in-out
-        &:hover::before
-            width: 0px
-        &::after
-            content: ''
-            position: absolute
-            top: 0
-            right: -2px
-            width: 5px
-            height: 100%
-            background: $lighterblue
-            transition: 0.2s ease-in 0.4s
-            transform: scaleY(1)
-        &:hover::after
-            transform: scaleY(0)

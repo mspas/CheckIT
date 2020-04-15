@@ -1,5 +1,6 @@
 import React from "react";
-import { Table } from "react-bootstrap";
+import { Table, Spinner } from "react-bootstrap";
+import "../../styles/lecture-presence.sass";
 
 class LecturePresence extends React.Component {
   isPresent(indeks) {
@@ -14,7 +15,11 @@ class LecturePresence extends React.Component {
 
   render() {
     if (this.props.isLoading) {
-      return <p>Loading ...</p>;
+      return (
+        <div className="spinner-wrap center">
+          <Spinner animation="border" variant="primary" role="status"></Spinner>
+        </div>
+      );
     }
 
     let students = this.props.students.map((data, index) => {
@@ -22,10 +27,12 @@ class LecturePresence extends React.Component {
         <tr key={index}>
           <td>{index + 1}.</td>
           <td>{data.name}</td>
-          <td>{data.indeks}</td>
+          <td className="text-center">{data.indeks}</td>
           <td>{data.email}</td>
-          <td>{data.presences}</td>
-          <td>{this.isPresent(data.indeks) && "Yes"}</td>
+          <td className="text-center">{data.presences}</td>
+          <td className="text-center">
+            {this.isPresent(data.indeks) && "Yes"}
+          </td>
         </tr>
       );
     });
@@ -36,9 +43,9 @@ class LecturePresence extends React.Component {
           <tr>
             <th>#</th>
             <th>Name</th>
-            <th>Indeks</th>
+            <th>Student's number</th>
             <th>Email</th>
-            <th>No of presence</th>
+            <th>Number of presences</th>
             <th>Present</th>
           </tr>
         </thead>

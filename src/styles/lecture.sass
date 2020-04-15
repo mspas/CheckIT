@@ -1,3 +1,68 @@
+@import '../_variables'
+@import '../_mixins'
+    
+.spinner-wrap
+    position: absolute
+    width: 100%
+    top: 40%
+.noselect-info
+    letter-spacing: 2px
+.course-code
+    letter-spacing: 2px
+.slope
+    position: absolute
+    z-index: 2
+    color: $primary
+.slope1
+    padding: 10px 0 0 10px
+    top: 0
+    left: 0
+    min-height: 60px
+    width: 100%
+    background: $purple
+    clip-path: polygon(0 0, 100% 0, 100% 60%, 0% 100%)
+.slope2
+    text-align: right
+    padding: 10px 10px 0 0
+    top: 0
+    right: -1px
+    height: 50px
+    width: 70%
+    background: $blue
+    clip-path: polygon(0 0, 100% 100%, 100% 0)
 .lecture-list
+    padding: 0 40px
+    margin-top: 25px
     .lecture-elem
         display: block
+        cursor: pointer
+        margin: 4px 0
+        padding: 10px
+        transition: 0.5s
+        @include color-opacity-bg($lightblue, 0.2)
+        &:hover
+            transform: scale(1.05)
+            @include color-opacity-bg($lightblue, 0.4)
+        p 
+            margin: 0
+            .lecture-date
+                float: right
+                letter-spacing: 2px 
+            .lecture-hour
+                float: right
+                font-size: 12px
+                margin-left: 5%
+                margin-top: 4px
+        .link-li
+            height: 100%
+            width: 100%
+.buttons-wrap
+    margin-bottom: 20px
+    button
+        margin: 0 5px
+        background: #ffffff00
+        color: #138496
+    button:nth-child(1)
+        color: #5A6268
+    button:nth-child(1):hover
+        color: #fff
