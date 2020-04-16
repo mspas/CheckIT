@@ -13,61 +13,24 @@ class SignIn extends React.Component {
     this._auth = new AuthService();
   }
 
-  handleInputChange = event => {
+  handleInputChange = (event) => {
     const { value, name } = event.target;
     this.setState({
-      [name]: value
+      [name]: value,
     });
   };
 
-  onSubmit = event => {
+  onSubmit = (event) => {
     event.preventDefault();
     this._auth
       .login(this.state.Email, this.state.Password)
-      .then(res => {
+      .then((res) => {
         this.props.history.replace("/dashboard");
       })
-      .catch(err => {
+      .catch((err) => {
         alert(err);
       });
-    /*fetch('/api/authenticate', {
-      method: 'POST',
-      body: JSON.stringify(this.state),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(res => {
-      if (res.status === 200) {
-        this.props.history.push('/dashboard');
-      } else {
-        const error = new Error(res.error);
-        throw error;
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert('Error logging in please try again');
-    });*/
-    /*fetch('/api/authenticate', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(res => {
-      if (res.status === 200) {
-        console.log(JSON.stringify(res));
-      } else {
-        const error = new Error(res.error);
-        throw error;
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert('Error logging in please try again');
-    });*/
-    //fetch(`https://fairestdb.p.rapidapi.com/friend/friendModel/_id/${this.state.id}`,
+    //this._auth.logout(2, false);
   };
 
   render() {

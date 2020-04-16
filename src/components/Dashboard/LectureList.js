@@ -104,10 +104,10 @@ class LectureList extends React.Component {
 
     return (
       <div>
-        <div className="course-name slope slope1">
+        <div className="course-name slope slope3">
           {this.props.lectures.name}
         </div>
-        <div className="course-code slope slope2">
+        <div className="course-code slope slope4">
           {this.props.courseData.courseCode}
         </div>
         <div className="lecture-list">

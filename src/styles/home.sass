@@ -5,10 +5,12 @@
     .sign-in-panel
         position: relative
         width: 500px
+        box-shadow: -3px 3px 17px 1px #0000006e
         @media screen and ( max-width: 500px )
             width: 100%
         .panel-nav
-            height: 60px
+            z-index: 0
+            height: 20px
             background: $purple
             color: #fff
             font-size: 20px
@@ -24,23 +26,32 @@
             position: relative
             background: #fff
             width: 100%
-            min-height: 400px
+            min-height: 300px
             padding: 15% 25% 10% 25%
         .slope
             position: absolute
             z-index: 2
             transition: 0.5s
-        .slope1
-            top: 60px
-            left: 0
+        .slope0
+            top: 0
+            right: 0
             height: 40px
             width: 100%
-            background: $purple
-            clip-path: polygon(0 0, 100% 0, 100% 0, 0 100%)
-        .slope2
-            top: -39px
+            background: $blue
+            clip-path: polygon(100% 0, 60% 0, 100% 100%)
+        .slope1
+            top: 0
             left: 0
-            height: 40px
+            height: 60px
+            width: 100%
+            background: $purple
+            clip-path: polygon(0 0, 100% 0, 100% 25%, 0% 100%)
+            padding: 10px 0 0 20px
+            font-size: 18px
+        .slope2
+            top: -24px
+            left: 0
+            height: 25px
             width: 100%
             background: $blue
             clip-path: polygon(0 100%, 100% 100%, 100% 0, 0 100%)
@@ -53,7 +64,7 @@
                 .slope2
                     clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 0)
             p 
-                margin: 15px 0
+                margin: 0
                 font-size: 18px
                 text-align: right
                 span 

@@ -2,26 +2,26 @@ import React, { Component } from "react";
 import AuthService from "./auth.service";
 
 export default function withAuth(AuthComponent) {
-  const Auth = new AuthService("http://localhost:8080");
+  const _auth = new AuthService("http://localhost:8080");
   return class AuthWrapped extends Component {
     constructor() {
       super();
       this.state = {
-        user: null
+        user: null,
       };
     }
 
     componentDidMount() {
-      if (!Auth.loggedIn()) {
+      if (!_auth.loggedIn()) {
         this.props.history.replace("/login");
       } else {
         try {
-          const profile = Auth.getProfile();
+          const profile = _auth.getProfile();
           this.setState({
-            user: profile
+            user: profile,
           });
         } catch (err) {
-          Auth.logout();
+          _auth.logout();
           this.props.history.replace("/login");
         }
       }

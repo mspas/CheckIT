@@ -19,7 +19,7 @@ class Dashboard extends React.Component {
     this.state = {
       url: "http://25.23.181.97:8090",
       lecturer_id: 5,
-      logged: localStorage.getItem("id_token"),
+      loggedName: "",
       lecturesLoading: false,
       coursesLoading: true,
       courses: [],
@@ -40,6 +40,9 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({
+      loggedName: localStorage.getItem("name"),
+    });
     fetch(
       this.state.url + "/api/lecturers/" + this.state.lecturer_id + "/courses",
       {
@@ -83,7 +86,7 @@ class Dashboard extends React.Component {
   }
 
   handleLogoutClick() {
-    this._auth.logout();
+    this._auth.logout(localStorage.getItem("id"), false); //HARDCODE
     this.props.history.replace("/login");
   }
 
@@ -149,7 +152,6 @@ class Dashboard extends React.Component {
     });
 
     fetch(this.state.url + "/api/courses/" + course_id + "/details", {
-      /////////// HARDCODE !!!!!!!!!!!!!!!
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -183,17 +185,15 @@ class Dashboard extends React.Component {
         <CoursesSidebar
           history={this.props.history}
           courses={this.state.courses}
-          logged={this.state.logged}
+          loggedName={this.state.loggedName}
           isLoading={this.state.coursesLoading}
           activeFlags={this.state.activeFlags}
           onCourseClick={this.handleCourseClick}
         />
         <Container className="content">
-          <div className="app-info">
-            <Link to="" onClick={this.handleLogoutClick}>
-              Logout
-            </Link>
-          </div>
+          <Link className="btn-logout" to="" onClick={this.handleLogoutClick}>
+            <span>Logout</span>
+          </Link>
           <div className="main-container">
             <LectureList
               courseData={this.state.courseData}

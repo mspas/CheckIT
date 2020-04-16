@@ -45,8 +45,7 @@ class CoursesSidebar extends React.Component {
       <div className="wrapper">
         <div className="course-menu">
           <div className="logo">logo</div>
-          <p className="title-text logged-user">{this.props.logged}</p>
-          <p className="title-text">Your courses</p>
+          <p className="logged-user">Welcome, {this.props.loggedName}</p>
           <span>
             <FontAwesomeIcon className="panel-icon" icon={faBars} />
           </span>

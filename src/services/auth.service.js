@@ -2,26 +2,29 @@ import decode from "jwt-decode";
 export default class AuthService {
   // Initializing important variables
   constructor(domain) {
-    this.domain = domain || "http://localhost:8080"; // API server domain
-    this.fetch = this.fetch.bind(this); // React binding stuff
+    this.domain = "http://25.23.181.97:8090";
+    this.fetch = this.fetch.bind(this);
     this.login = this.login.bind(this);
     this.getProfile = this.getProfile.bind(this);
+    this.getEmail = this.getEmail.bind(this);
   }
 
-  login(username, password) {
+  login(email, password) {
     // Get a token from api server using the fetch api
-    /*return this.fetch(`${this.domain}/login`, {
-            method: 'POST',
-            body: JSON.stringify({
-                username,
-                password
-            })
-        }).then(res => {
-            this.setToken(res.token) // Setting the token in localStorage
-            return Promise.resolve(res);
-        })*/
-    localStorage.setItem("id_token", username);
-    return Promise.resolve(true);
+    return this.fetch(`${this.domain}/login`, {
+      method: "POST",
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    }).then((res) => {
+      this.setToken(res.token);
+      localStorage.setItem("id", res.id);
+      localStorage.setItem("name", res.name);
+      return Promise.resolve(res);
+    });
+    //localStorage.setItem("id_token", username);
+    //return Promise.resolve(true);
   }
 
   loggedIn() {
@@ -45,18 +48,53 @@ export default class AuthService {
   }
 
   setToken(idToken) {
-    // Saves user token to localStorage
     localStorage.setItem("id_token", idToken);
   }
 
   getToken() {
-    // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");
   }
 
-  logout() {
+  getId(token) {
+    try {
+      const decoded = decode(token);
+      console.log(JSON.stringify(decoded));
+      return decoded.userId;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  getEmail() {
+    let token = this.getToken();
+    try {
+      const decoded = decode(token);
+      return decoded.sub;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  logout(id, logged) {
+    //let id = 38;
     // Clear user token and profile data from localStorage
-    localStorage.removeItem("id_token");
+    //let id = this.getId(this.getToken());
+
+    return this.fetch(`${this.domain}/api/logout`, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        //Authorization: "Bearer " + this.getToken(),
+      },
+      body: JSON.stringify({
+        id,
+        logged,
+      }),
+    }).then((res) => {
+      localStorage.removeItem("id_token");
+      return Promise.resolve(res);
+    });
   }
 
   getProfile() {
@@ -69,7 +107,7 @@ export default class AuthService {
     // performs api calls sending the required authentication headers
     const headers = {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     };
 
     // Setting Authorization header
@@ -80,10 +118,10 @@ export default class AuthService {
 
     return fetch(url, {
       headers,
-      ...options
+      ...options,
     })
       .then(this._checkStatus)
-      .then(response => response.json());
+      .then((response) => response.json());
   }
 
   _checkStatus(response) {

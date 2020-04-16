@@ -1,7 +1,7 @@
 import React from "react";
 import "../../styles/home.sass";
 import SignIn from "./Sign-in";
-import logo from "../../assets/coronaS.png";
+//import logo from "../../assets/coronaS.png";
 import AuthService from "../../services/auth.service";
 import { Container, Row, Col } from "react-bootstrap";
 
@@ -28,24 +28,21 @@ class Home extends React.Component {
     return (
       <Container className="center">
         <div className="sign-in-panel">
-          <div className="panel-nav center">
-            Sign In
-            <div className="slope slope1"></div>
+          <div className="center">
+            <div className="slope slope1">
+              <span>Sign In</span>
+            </div>
+            <div className="slope slope0"></div>
           </div>
           <div className="row panel-content">
             <SignIn history={this.props.history} />
           </div>
-          <Row className="footer-panel">
+          <div className="footer-panel">
             <div className="slope slope2"></div>
-            <Col className="center">
-              <img src={logo} alt="Logo" height={50} />
-            </Col>
-            <Col>
-              <p>
-                Attendance Tracker <span>@2020</span>
-              </p>
-            </Col>
-          </Row>
+            <p>
+              Attendance Tracker <span>@2020</span>
+            </p>
+          </div>
         </div>
       </Container>
     );
