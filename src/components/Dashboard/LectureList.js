@@ -56,7 +56,7 @@ class LectureList extends React.Component {
   render() {
     if (!this.props.isLoading && !this.props.courseData) {
       return (
-        <div className="spinner-wrap center">
+        <div className="noselect-wrap center">
           <span className="noselect-info">
             Select course from sidebar menu to see its details!
           </span>
@@ -114,7 +114,7 @@ class LectureList extends React.Component {
           {this.props.clickedLectureId === -1 && lectures}
         </div>
         {this.props.clickedLectureId !== -1 && (
-          <div>
+          <div className="presence-wrap">
             <div className="buttons-wrap">
               <Button variant="secondary" onClick={this.props.onBackClick}>
                 Back
