@@ -27,6 +27,7 @@ class Dashboard extends React.Component {
       lectures: [],
       activeFlags: [],
       clickedLectureId: -1,
+      lextureIndex: -1,
       lectureData: null,
       presenceLoading: true,
     };
@@ -70,19 +71,6 @@ class Dashboard extends React.Component {
         console.error(err);
         alert("Error database fetch data: courses");
       });
-    /*this._api.getCoursesForLecturer(this.state.lecturer_id).then((res) => {
-      let array = [];
-      if (res.length > 0) {
-        for (let i = 0; i < res.length; i++) {
-          array.push(false);
-        }
-      }
-      this.setState({
-        courses: res,
-        coursesLoading: false,
-        activeFlags: array,
-      });
-    });*/
   }
 
   handleLogoutClick() {
@@ -98,7 +86,8 @@ class Dashboard extends React.Component {
     this.handleLinks(data.id, index);
   }
 
-  handleLectureClick(data, event) {
+  handleLectureClick(data, index, event) {
+    console.log(index);
     fetch(this.state.url + "/api/lectures/" + data.id + "/details", {
       method: "GET",
       headers: {
@@ -108,7 +97,8 @@ class Dashboard extends React.Component {
       .then((response) => response.json())
       .then((json) => {
         this.setState({
-          clickedLectureId: data.id,
+          clickedLectureId: index + 1,
+          lextureIndex: index + 1,
           lectureData: json,
           presenceLoading: false,
         });
@@ -117,10 +107,6 @@ class Dashboard extends React.Component {
         console.error(err);
         alert("Error database fetch data: lecture data");
       });
-
-    /*this._api.getLectureData(data.id).then((res) => {
-      this.setState({ lectureData: res, isLoading: false });
-    });*/
   }
   handleBackClick() {
     this.setState({
@@ -169,14 +155,6 @@ class Dashboard extends React.Component {
         console.error(err);
         alert("Error database fetch data: course data");
       });
-
-    /*this._api.getCourseData(course_id).then((res) => {
-      this.setState({
-        courseData: res,
-        lectures: this.state.courses[index],
-        lecturesLoading: false,
-      });
-    });*/
   }
 
   render() {
@@ -198,6 +176,7 @@ class Dashboard extends React.Component {
             <LectureList
               courseData={this.state.courseData}
               lectures={this.state.lectures}
+              lextureIndex={this.state.lextureIndex}
               isLoading={this.state.lecturesLoading}
               presenceLoading={this.state.presenceLoading}
               clickedLectureId={this.state.clickedLectureId}

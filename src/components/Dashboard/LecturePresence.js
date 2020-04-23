@@ -1,5 +1,6 @@
 import React from "react";
-import { Table, Spinner } from "react-bootstrap";
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
+import { Table, Spinner, Button } from "react-bootstrap";
 import "../../styles/lecture-presence.sass";
 
 class LecturePresence extends React.Component {
@@ -38,19 +39,44 @@ class LecturePresence extends React.Component {
     });
 
     return (
-      <Table responsive bordered hover>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Student's number</th>
-            <th>Email</th>
-            <th>Number of presences</th>
-            <th>Present</th>
-          </tr>
-        </thead>
-        <tbody>{students}</tbody>
-      </Table>
+      <div className="presence-list-wrap">
+        <div className="buttons-wrap">
+          <ReactHTMLTableToExcel
+            id="test-table-xls-button"
+            className="button btn"
+            table="table-to-export"
+            filename={
+              this.props.courseName +
+              "(" +
+              this.props.courseData.courseCode +
+              ") - Lecture" +
+              this.props.lextureIndex
+            }
+            sheet="tablexls"
+            buttonText="Export to XLS"
+          />
+          <Button
+            className="button"
+            variant="info"
+            onClick={this.handleExportToPDF}
+          >
+            Export to PDF
+          </Button>
+        </div>
+        <Table responsive bordered hover id="table-to-export">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Student's number</th>
+              <th>Email</th>
+              <th>Number of presences</th>
+              <th>Present</th>
+            </tr>
+          </thead>
+          <tbody>{students}</tbody>
+        </Table>
+      </div>
     );
   }
 }

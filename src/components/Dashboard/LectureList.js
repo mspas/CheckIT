@@ -18,37 +18,8 @@ class LectureList extends React.Component {
       wasClicked: true,
       lectureData: null,
     };
-    //this.handleLectureClick = this.handleLectureClick.bind(this);
-    //this.handleBackClick = this.handleBackClick.bind(this);
-    this.handleExportToExcel = this.handleExportToExcel.bind(this);
     this.handleExportToPDF = this.handleExportToPDF.bind(this);
   }
-
-  /*handleLectureClick(data, event) {
-    fetch(this.state.url + "/api/lectures/" + data.id + "/details", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        this.setState(
-          {
-            clickedLectureId: data.id,
-            lectureData: json,
-            isLoading: false,
-          },
-          () => {
-            console.log(this.state.clickedLectureId);
-          }
-        );
-      })
-      .catch((err) => {
-        console.error(err);
-        alert("Error database fetch data: lecture data");
-      });
-  }*/
 
   handleExportToExcel() {}
   handleExportToPDF() {}
@@ -92,7 +63,7 @@ class LectureList extends React.Component {
           className="lecture-elem"
           to=""
           key={index}
-          onClick={this.props.onLectureClick.bind(null, data)}
+          onClick={this.props.onLectureClick.bind(null, data, index)}
         >
           <p>
             Lecture {index + 1} <span className="lecture-hour">{hour}</span>
@@ -111,22 +82,26 @@ class LectureList extends React.Component {
           {this.props.courseData.courseCode}
         </div>
         <div className="lecture-list">
-          {this.props.clickedLectureId === -1 && lectures}
+          {this.props.clickedLectureId === -1 && (
+            <div>
+              <Button variant="info" onClick={this.handlePressenceOverview}>
+                Course overview
+              </Button>
+              {lectures}
+            </div>
+          )}
         </div>
         {this.props.clickedLectureId !== -1 && (
           <div className="presence-wrap">
-            <div className="buttons-wrap">
+            <div className="btn-wrap">
               <Button variant="secondary" onClick={this.props.onBackClick}>
                 Back
               </Button>
-              <Button variant="info" onClick={this.handleExportToExcel}>
-                Export to Excel
-              </Button>
-              <Button variant="info" onClick={this.handleExportToPDF}>
-                Export to PDF
-              </Button>
             </div>
             <LecturePresence
+              courseName={this.props.lectures.name}
+              courseData={this.props.courseData}
+              lextureIndex={this.props.lextureIndex}
               lectureData={this.props.lectureData}
               students={this.props.courseData.students}
               isLoading={this.props.presenceLoading}

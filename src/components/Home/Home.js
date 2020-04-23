@@ -3,7 +3,7 @@ import "../../styles/home.sass";
 import SignIn from "./Sign-in";
 //import logo from "../../assets/coronaS.png";
 import AuthService from "../../services/auth.service";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 class Home extends React.Component {
   constructor(props) {
