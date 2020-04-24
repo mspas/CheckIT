@@ -87,7 +87,6 @@ class Dashboard extends React.Component {
   }
 
   handleLectureClick(data, index, event) {
-    console.log(index);
     fetch(this.state.url + "/api/lectures/" + data.id + "/details", {
       method: "GET",
       headers: {

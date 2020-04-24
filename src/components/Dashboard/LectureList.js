@@ -4,6 +4,7 @@ import { Link } from "react-scroll";
 import { Spinner, Button } from "react-bootstrap";
 import ApiService from "../../services/api.service";
 import LecturePresence from "./LecturePresence";
+import CourseOverview from "./CourseOverview";
 
 class LectureList extends React.Component {
   constructor(props) {
@@ -13,16 +14,51 @@ class LectureList extends React.Component {
     this.state = {
       url: "http://25.23.181.97:8090",
       isLoadingUsers: true,
+      isLoadingOverview: true,
       isLoading: true,
       clickedLectureId: this.props.clickedLectureId,
+      courseOverviewClicked: false,
       wasClicked: true,
-      lectureData: null,
+      overviewData: null,
     };
-    this.handleExportToPDF = this.handleExportToPDF.bind(this);
+    this.handlePressenceOverview = this.handlePressenceOverview.bind(this);
+    this.onBackClick = this.onBackClick.bind(this);
   }
 
-  handleExportToExcel() {}
-  handleExportToPDF() {}
+  handlePressenceOverview() {
+    var counter = 0;
+    var overviewData = [];
+    this.props.lectures.lectures.forEach((lecture) => {
+      fetch(this.state.url + "/api/lectures/" + lecture.id + "/details", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          overviewData.push(json);
+          counter++;
+          if (counter === this.props.lectures.lectures.length) {
+            this.setState({
+              overviewData: overviewData,
+              courseOverviewClicked: true,
+              isLoadingOverview: false,
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          alert("Error database fetch data: lecture data");
+        });
+    });
+  }
+
+  onBackClick() {
+    this.setState({
+      courseOverviewClicked: false,
+    });
+  }
 
   render() {
     if (!this.props.isLoading && !this.props.courseData) {
@@ -82,14 +118,15 @@ class LectureList extends React.Component {
           {this.props.courseData.courseCode}
         </div>
         <div className="lecture-list">
-          {this.props.clickedLectureId === -1 && (
-            <div>
-              <Button variant="info" onClick={this.handlePressenceOverview}>
-                Course overview
-              </Button>
-              {lectures}
-            </div>
-          )}
+          {this.props.clickedLectureId === -1 &&
+            !this.state.courseOverviewClicked && (
+              <div>
+                <Button variant="info" onClick={this.handlePressenceOverview}>
+                  Course overview
+                </Button>
+                {lectures}
+              </div>
+            )}
         </div>
         {this.props.clickedLectureId !== -1 && (
           <div className="presence-wrap">
@@ -108,6 +145,23 @@ class LectureList extends React.Component {
             />
           </div>
         )}
+        {this.props.clickedLectureId === -1 &&
+          this.state.courseOverviewClicked && (
+            <div className="presence-wrap">
+              <div className="btn-wrap">
+                <Button variant="secondary" onClick={this.onBackClick}>
+                  Back
+                </Button>
+              </div>
+              <CourseOverview
+                courseName={this.props.lectures.name}
+                courseData={this.props.courseData}
+                overviewData={this.state.overviewData}
+                students={this.props.courseData.students}
+                isLoading={this.state.isLoadingOverview}
+              />
+            </div>
+          )}
       </div>
     );
   }
