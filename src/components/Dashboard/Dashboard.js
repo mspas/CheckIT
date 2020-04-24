@@ -30,14 +30,18 @@ class Dashboard extends React.Component {
       lextureIndex: -1,
       lectureData: null,
       presenceLoading: true,
+      courseOverviewClicked: false,
+      wasClicked: true,
+      overviewData: null,
     };
 
     this.handleCourseClick = this.handleCourseClick.bind(this);
     this.handleLectureClick = this.handleLectureClick.bind(this);
+    this.handleLectureClick = this.handleLectureClick.bind(this);
     this.handleBackClick = this.handleBackClick.bind(this);
     this.handleLinks = this.handleLinks.bind(this);
     this.handleLectures = this.handleLectures.bind(this);
-    this.handleLogoutClick = this.handleLogoutClick.bind(this);
+    this.handleOverviewClick = this.handleOverviewClick.bind(this);
   }
 
   componentDidMount() {
@@ -82,6 +86,8 @@ class Dashboard extends React.Component {
     this.setState({
       lecturesLoading: true,
       clickedLectureId: -1,
+      courseOverviewClicked: false,
+      isLoadingOverview: true,
     });
     this.handleLinks(data.id, index);
   }
@@ -110,6 +116,8 @@ class Dashboard extends React.Component {
   handleBackClick() {
     this.setState({
       clickedLectureId: -1,
+      courseOverviewClicked: false,
+      isLoadingOverview: true,
     });
   }
 
@@ -156,6 +164,35 @@ class Dashboard extends React.Component {
       });
   }
 
+  handleOverviewClick() {
+    var counter = 0;
+    var overviewData = [];
+    this.state.lectures.lectures.forEach((lecture) => {
+      fetch(this.state.url + "/api/lectures/" + lecture.id + "/details", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          overviewData.push(json);
+          counter++;
+          if (counter === this.state.lectures.lectures.length) {
+            this.setState({
+              overviewData: overviewData,
+              courseOverviewClicked: true,
+              isLoadingOverview: false,
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          alert("Error database fetch data: lecture data");
+        });
+    });
+  }
+
   render() {
     return (
       <div>
@@ -180,8 +217,12 @@ class Dashboard extends React.Component {
               presenceLoading={this.state.presenceLoading}
               clickedLectureId={this.state.clickedLectureId}
               lectureData={this.state.lectureData}
+              courseOverviewClicked={this.state.courseOverviewClicked}
+              overviewData={this.state.overviewData}
+              isLoadingOverview={this.state.isLoadingOverview}
               onLectureClick={this.handleLectureClick}
               onBackClick={this.handleBackClick}
+              onOverviewClick={this.handleOverviewClick}
             />
           </div>
         </Container>

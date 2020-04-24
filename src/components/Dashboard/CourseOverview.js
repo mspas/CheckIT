@@ -1,9 +1,32 @@
 import React from "react";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { Table, Spinner, Button } from "react-bootstrap";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import "../../styles/lecture-presence.sass";
 
 class CourseOverview extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleExportToPDF = this.handleExportToPDF.bind(this);
+  }
+
+  handleExportToPDF() {
+    const input = document.getElementById("table-to-export");
+
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({ orientation: "landscape" });
+      pdf.addImage(imgData, "PNG", 0, 0);
+      pdf.save(
+        this.props.courseName +
+          "(" +
+          this.props.courseData.courseCode +
+          ") - Presence Overview.pdf"
+      );
+    });
+  }
+
   isPresent(lectureId, studentNumber) {
     this.props.overviewData.forEach((lecture) => {
       if (lecture.id === lectureId) {
@@ -32,7 +55,6 @@ class CourseOverview extends React.Component {
           <td>{index + 1}.</td>
           <td>{data.name}</td>
           <td className="text-center">{data.indeks}</td>
-          <td>{data.email}</td>
           {this.props.overviewData.map((lect, i) => {
             return (
               <td className="text-center" key={i}>
@@ -79,7 +101,6 @@ class CourseOverview extends React.Component {
               <th>#</th>
               <th>Name</th>
               <th>Student's number</th>
-              <th>Email</th>
               {headers}
               <th>Number of presences</th>
             </tr>

@@ -1,9 +1,16 @@
 import React from "react";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { Table, Spinner, Button } from "react-bootstrap";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import "../../styles/lecture-presence.sass";
 
 class LecturePresence extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleExportToPDF = this.handleExportToPDF.bind(this);
+  }
+
   isPresent(indeks) {
     for (let i = 0; i < this.props.lectureData.students.length; i++) {
       const element = this.props.lectureData.students[i];
@@ -12,6 +19,24 @@ class LecturePresence extends React.Component {
       }
     }
     return false;
+  }
+
+  handleExportToPDF() {
+    const input = document.getElementById("table-to-export");
+
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({ orientation: "landscape" });
+      pdf.addImage(imgData, "PNG", 0, 0);
+      pdf.save(
+        this.props.courseName +
+          "(" +
+          this.props.courseData.courseCode +
+          ") - Lecture" +
+          this.props.lextureIndex +
+          ".pdf"
+      );
+    });
   }
 
   render() {

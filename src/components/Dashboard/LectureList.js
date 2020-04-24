@@ -119,9 +119,12 @@ class LectureList extends React.Component {
         </div>
         <div className="lecture-list">
           {this.props.clickedLectureId === -1 &&
-            !this.state.courseOverviewClicked && (
+            !this.props.courseOverviewClicked && (
               <div>
-                <Button variant="info" onClick={this.handlePressenceOverview}>
+                <Button
+                  variant="info"
+                  onClick={this.props.onOverviewClick.bind(null)}
+                >
                   Course overview
                 </Button>
                 {lectures}
@@ -146,19 +149,19 @@ class LectureList extends React.Component {
           </div>
         )}
         {this.props.clickedLectureId === -1 &&
-          this.state.courseOverviewClicked && (
+          this.props.courseOverviewClicked && (
             <div className="presence-wrap">
               <div className="btn-wrap">
-                <Button variant="secondary" onClick={this.onBackClick}>
+                <Button variant="secondary" onClick={this.props.onBackClick}>
                   Back
                 </Button>
               </div>
               <CourseOverview
                 courseName={this.props.lectures.name}
                 courseData={this.props.courseData}
-                overviewData={this.state.overviewData}
+                overviewData={this.props.overviewData}
                 students={this.props.courseData.students}
-                isLoading={this.state.isLoadingOverview}
+                isLoading={this.props.isLoadingOverview}
               />
             </div>
           )}
