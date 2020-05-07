@@ -1,7 +1,6 @@
 import React from "react";
 import "../../styles/home.sass";
 import SignIn from "./Sign-in";
-//import logo from "../../assets/coronaS.png";
 import AuthService from "../../services/auth.service";
 import { Container } from "react-bootstrap";
 

@@ -1,19 +1,20 @@
 import React from "react";
 import "../../styles/dashboard.sass";
 import AuthService from "../../services/auth.service";
-import CoursesSidebar from "./CoursesSidebar.container";
+import Sidebar from "./Sidebar.container";
 import { Link } from "react-scroll";
 import { Container } from "react-bootstrap";
 import ApiServiceMock from "../../services/api.mock.service";
-import ApiService from "../../services/api.service";
-import LectureList from "./LectureList";
+import CourseView from "./CourseView";
+import WeekSchedule from "./WeekSchedule";
+import DataService from "../../services/data.service";
 
 class Dashboard extends React.Component {
   constructor() {
     super();
     this._auth = new AuthService();
     this._apiMock = new ApiServiceMock();
-    this._api = new ApiService();
+    this._data = new DataService();
 
     this.state = {
       url: "http://25.23.181.97:8090",
@@ -21,18 +22,12 @@ class Dashboard extends React.Component {
       loggedName: "",
       lecturesLoading: false,
       coursesLoading: true,
-      presenceLoading: true,
       scheduleLoading: true,
-      courseOverviewClicked: false,
-      clickedLectureId: -1,
-      lectureIndex: -1,
       courses: [],
-      activeFlags: [],
       lectures: [],
       courseData: null,
-      lectureData: null,
-      overviewData: null,
       scheduleData: null,
+      dateString: "",
     };
 
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
@@ -54,16 +49,9 @@ class Dashboard extends React.Component {
     )
       .then((response) => response.json())
       .then((json) => {
-        let array = [];
-        if (json.courses.length > 0) {
-          for (let i = 0; i < json.courses.length; i++) {
-            array.push(false);
-          }
-        }
         this.setState({
           courses: json.courses,
           coursesLoading: false,
-          activeFlags: array,
         });
       })
       .catch((err) => {
@@ -71,7 +59,7 @@ class Dashboard extends React.Component {
         alert("Error database fetch data: courses");
       });
 
-    /*fetch(
+    fetch(
       this.state.url + "/api/lecturers/" + this.state.lecturer_id + "/schedule",
       {
         method: "GET",
@@ -82,26 +70,35 @@ class Dashboard extends React.Component {
     )
       .then((response) => response.json())
       .then((json) => {
+        let date1 = new Date(json.schedule[0].date);
+        let date2 = new Date(json.schedule[6].date);
+        let date =
+          ("0" + date1.getDate()).slice(-2) +
+          " " +
+          this._data.getMonthName(date1.getMonth()) +
+          " - " +
+          ("0" + date2.getDate()).slice(-2) +
+          " " +
+          this._data.getMonthName(date2.getMonth());
         this.setState({
           scheduleData: json,
           scheduleLoading: false,
+          dateString: date,
         });
       })
       .catch((err) => {
         console.error(err);
-        alert("Error database fetch data: courses");
-      });*/
+        alert("Error database fetch data: schedule");
+      });
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.courseId !== prevProps.courseId) {
       this.setState({
         lecturesLoading: true,
-        clickedLectureId: -1,
-        courseOverviewClicked: false,
-        isLoadingOverview: true,
       });
-      this.handleLecturesForCourse(this.props.courseId);
+      if (this.props.courseId !== -1)
+        this.handleLecturesForCourse(this.props.courseId);
     }
   }
 
@@ -144,7 +141,7 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div>
-        <CoursesSidebar
+        <Sidebar
           courses={this.state.courses}
           loggedName={this.state.loggedName}
           isLoading={this.state.coursesLoading}
@@ -154,20 +151,23 @@ class Dashboard extends React.Component {
             <span>Logout</span>
           </Link>
           <div className="main-container">
-            <LectureList
-              courseData={this.state.courseData}
-              lectures={this.state.lectures}
-              isLoading={this.state.lecturesLoading}
-              courseOverviewClicked={this.state.courseOverviewClicked}
-              overviewData={this.state.overviewData}
-              isLoadingOverview={this.state.isLoadingOverview}
-              courseId={this.props.courseId}
-              lectureId={this.props.lectureId}
-              changeLecture={this.props.changeLecture}
-              eraseLecture={this.props.eraseLecture}
-              onBackClick={this.handleBackClick}
-              onOverviewClick={this.handleOverviewClick}
-            />
+            <div className="course-name slope slope3">
+              {this.state.dateString}
+            </div>
+            <div className="course-code slope slope4">Schedule</div>
+            {this.props.courseId !== -1 ? (
+              <CourseView
+                courseData={this.state.courseData}
+                lectures={this.state.lectures}
+                isLoading={this.state.lecturesLoading}
+                courseId={this.props.courseId}
+                lectureId={this.props.lectureId}
+                changeLecture={this.props.changeLecture}
+                eraseLecture={this.props.eraseLecture}
+              />
+            ) : (
+              <WeekSchedule scheduleData={this.state.scheduleData} />
+            )}
           </div>
         </Container>
       </div>

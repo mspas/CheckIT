@@ -5,7 +5,7 @@ import {
   changeLecture,
   eraseLecture,
 } from "../../actions";
-import CoursesSidebar from "./CoursesSidebar";
+import Sidebar from "./Sidebar";
 
 const mapDispatchToProps = {
   changeCourse,
@@ -20,4 +20,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CoursesSidebar);
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

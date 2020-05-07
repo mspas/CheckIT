@@ -1,17 +1,18 @@
 import React from "react";
-import "../../styles/course.sass";
+import "../../styles/sidebar.sass";
 import { Link } from "react-scroll";
 import { Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 
-class CoursesSidebar extends React.Component {
+class Sidebar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       activeFlags: [],
     };
     this.onCourseClick = this.onCourseClick.bind(this);
+    this.onScheduleClick = this.onScheduleClick.bind(this);
   }
 
   componentDidMount() {
@@ -59,6 +60,12 @@ class CoursesSidebar extends React.Component {
     this.props.eraseLecture();
   }
 
+  onScheduleClick() {
+    this.setDefaultFlags();
+    this.props.eraseCourse();
+    this.props.eraseLecture();
+  }
+
   render() {
     if (this.props.isLoading) {
       return (
@@ -102,19 +109,13 @@ class CoursesSidebar extends React.Component {
           <span>
             <FontAwesomeIcon className="panel-icon" icon={faBars} />
           </span>
-          <Link
-            className="btn-schedule"
-            to=""
-            onClick={this.props.onScheduleClick}
-          >
-            <button className="course-name" onClick={this.handleClick}>
-              Your Week Schedule
-            </button>
-          </Link>
+          <button className="btn-schedule" onClick={this.onScheduleClick}>
+            Your Week Schedule
+          </button>
           <ul>{courses}</ul>
         </div>
       </div>
     );
   }
 }
-export default CoursesSidebar;
+export default Sidebar;

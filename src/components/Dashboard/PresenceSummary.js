@@ -5,7 +5,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import "../../styles/lecture-presence.sass";
 
-class CourseOverview extends React.Component {
+class PresenceSummary extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -118,4 +118,4 @@ class CourseOverview extends React.Component {
     );
   }
 }
-export default CourseOverview;
+export default PresenceSummary;

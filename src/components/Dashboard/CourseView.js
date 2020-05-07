@@ -4,9 +4,9 @@ import { Link } from "react-scroll";
 import { Spinner, Button } from "react-bootstrap";
 import ApiService from "../../services/api.service";
 import LecturePresence from "./LecturePresence";
-import CourseOverview from "./CourseOverview";
+import PresenceSummary from "./PresenceSummary";
 
-class LectureList extends React.Component {
+class CourseView extends React.Component {
   constructor(props) {
     super(props);
     this._api = new ApiService();
@@ -180,7 +180,7 @@ class LectureList extends React.Component {
                 Back
               </Button>
             </div>
-            <CourseOverview
+            <PresenceSummary
               courseName={this.props.lectures.name}
               courseData={this.props.courseData}
               overviewData={this.state.overviewData}
@@ -192,4 +192,4 @@ class LectureList extends React.Component {
     );
   }
 }
-export default LectureList;
+export default CourseView;
