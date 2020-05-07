@@ -6,6 +6,59 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 class CoursesSidebar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeFlags: [],
+    };
+    this.onCourseClick = this.onCourseClick.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.courses.length > 0) this.setDefaultFlags();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.courses !== prevProps.courses) {
+      this.setDefaultFlags();
+    }
+    if (this.props.courseId !== prevProps.courseId) {
+      this.setDefaultFlags();
+    }
+  }
+
+  setDefaultFlags() {
+    return new Promise((resolve, reject) => {
+      let temp = [];
+      for (let i = 0; i < this.props.courses.length; i++) {
+        temp.push(false);
+      }
+      this.setState(
+        {
+          activeFlags: temp,
+        },
+        () => {
+          resolve(this.state.activeFlags);
+        }
+      );
+    });
+  }
+
+  setActiveFlag(index) {
+    this.setDefaultFlags().then((res) => {
+      res[index] = true;
+      this.setState({
+        activeFlags: res,
+      });
+    });
+  }
+
+  onCourseClick(data, index) {
+    this.setActiveFlag(index);
+    this.props.changeCourse(data.id);
+    this.props.eraseLecture();
+  }
+
   render() {
     if (this.props.isLoading) {
       return (
@@ -30,10 +83,10 @@ class CoursesSidebar extends React.Component {
         <li key={index}>
           <Link
             className={
-              this.props.activeFlags[index] ? "list-elem active" : "list-elem"
+              this.state.activeFlags[index] ? "list-elem active" : "list-elem"
             }
             to=""
-            onClick={this.props.onCourseClick.bind(null, data, index)}
+            onClick={this.onCourseClick.bind(null, data, index)}
           >
             <span className="course-name">{data.name}</span>
           </Link>
@@ -54,7 +107,9 @@ class CoursesSidebar extends React.Component {
             to=""
             onClick={this.props.onScheduleClick}
           >
-            <span className="course-name">Your Week Schedule</span>
+            <button className="course-name" onClick={this.handleClick}>
+              Your Week Schedule
+            </button>
           </Link>
           <ul>{courses}</ul>
         </div>

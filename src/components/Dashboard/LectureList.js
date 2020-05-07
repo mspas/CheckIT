@@ -13,23 +13,60 @@ class LectureList extends React.Component {
 
     this.state = {
       url: "http://25.23.181.97:8090",
-      isLoadingUsers: true,
-      isLoadingOverview: true,
-      isLoading: true,
-      clickedLectureId: this.props.clickedLectureId,
-      courseOverviewClicked: false,
-      wasClicked: true,
       overviewData: null,
+      courseOverviewClicked: false,
+      isLoadingOverview: true,
+      presenceLoading: true,
     };
-    this.handlePressenceOverview = this.handlePressenceOverview.bind(this);
     this.onBackClick = this.onBackClick.bind(this);
+    this.onLectureClick = this.onLectureClick.bind(this);
+    this.onOverviewClick = this.onOverviewClick.bind(this);
   }
 
-  handlePressenceOverview() {
-    console.log(this.props.courseData.courseId);
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.courseId !== prevProps.courseId) {
+      this.setState({
+        courseOverviewClicked: false,
+        isLoadingOverview: true,
+      });
+    }
+  }
+
+  onBackClick() {
+    this.props.eraseLecture();
+    this.setState({
+      courseOverviewClicked: false,
+      isLoadingOverview: true,
+    });
+  }
+
+  onLectureClick(data, index, event) {
+    this.props.changeLecture(data.id);
+
+    fetch(this.state.url + "/api/lectures/" + data.id + "/details", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({
+          lectureIndex: index + 1,
+          presenceData: json,
+          presenceLoading: false,
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Error database fetch data: lecture data");
+      });
+  }
+
+  onOverviewClick() {
     fetch(
       this.state.url +
-        "/api/course/" +
+        "/api/courses/" +
         this.props.courseData.courseId +
         "/summary",
       {
@@ -41,8 +78,6 @@ class LectureList extends React.Component {
     )
       .then((response) => response.json())
       .then((json) => {
-        console.log("chuj");
-        console.log(JSON.stringify(json));
         this.setState({
           overviewData: json,
           courseOverviewClicked: true,
@@ -53,12 +88,6 @@ class LectureList extends React.Component {
         console.error(err);
         alert("Error database fetch data: lecture data");
       });
-  }
-
-  onBackClick() {
-    this.setState({
-      courseOverviewClicked: false,
-    });
   }
 
   render() {
@@ -100,7 +129,7 @@ class LectureList extends React.Component {
           className="lecture-elem"
           to=""
           key={index}
-          onClick={this.props.onLectureClick.bind(null, data, index)}
+          onClick={this.onLectureClick.bind(null, data, index)}
         >
           <p>
             Lecture {index + 1} <span className="lecture-hour">{hour}</span>
@@ -119,53 +148,46 @@ class LectureList extends React.Component {
           {this.props.courseData.courseCode}
         </div>
         <div className="lecture-list">
-          {this.props.clickedLectureId === -1 &&
-            !this.props.courseOverviewClicked && (
-              <div>
-                <Button
-                  variant="info"
-                  onClick={this.props.onOverviewClick.bind(null)}
-                >
-                  Course overview
-                </Button>
-                {lectures}
-              </div>
-            )}
+          {this.props.lectureId === -1 && !this.state.courseOverviewClicked && (
+            <div>
+              <Button variant="info" onClick={this.onOverviewClick.bind(null)}>
+                Course overview
+              </Button>
+              {lectures}
+            </div>
+          )}
         </div>
-        {this.props.clickedLectureId !== -1 && (
+        {this.props.lectureId !== -1 && (
           <div className="presence-wrap">
             <div className="btn-wrap">
-              <Button variant="secondary" onClick={this.props.onBackClick}>
+              <Button variant="secondary" onClick={this.onBackClick}>
                 Back
               </Button>
             </div>
             <LecturePresence
               courseName={this.props.lectures.name}
               courseData={this.props.courseData}
-              lectureIndex={this.props.lectureIndex}
-              lectureData={this.props.lectureData}
-              students={this.props.courseData.students}
-              isLoading={this.props.presenceLoading}
+              lectureIndex={this.state.lectureIndex}
+              presenceData={this.state.presenceData}
+              isLoading={this.state.presenceLoading}
             />
           </div>
         )}
-        {this.props.clickedLectureId === -1 &&
-          this.props.courseOverviewClicked && (
-            <div className="presence-wrap">
-              <div className="btn-wrap">
-                <Button variant="secondary" onClick={this.props.onBackClick}>
-                  Back
-                </Button>
-              </div>
-              <CourseOverview
-                courseName={this.props.lectures.name}
-                courseData={this.props.courseData}
-                overviewData={this.props.overviewData}
-                students={this.props.courseData.students}
-                isLoading={this.props.isLoadingOverview}
-              />
+        {this.props.lectureId === -1 && this.state.courseOverviewClicked && (
+          <div className="presence-wrap">
+            <div className="btn-wrap">
+              <Button variant="secondary" onClick={this.onBackClick}>
+                Back
+              </Button>
             </div>
-          )}
+            <CourseOverview
+              courseName={this.props.lectures.name}
+              courseData={this.props.courseData}
+              overviewData={this.state.overviewData}
+              isLoading={this.state.isLoadingOverview}
+            />
+          </div>
+        )}
       </div>
     );
   }

@@ -12,8 +12,8 @@ class LecturePresence extends React.Component {
   }
 
   isPresent(indeks) {
-    for (let i = 0; i < this.props.lectureData.students.length; i++) {
-      const element = this.props.lectureData.students[i];
+    for (let i = 0; i < this.props.presenceData.students.length; i++) {
+      const element = this.props.presenceData.students[i];
       if (element.indeks === indeks) {
         return true;
       }
@@ -48,7 +48,7 @@ class LecturePresence extends React.Component {
       );
     }
 
-    let students = this.props.students.map((data, index) => {
+    let students = this.props.courseData.students.map((data, index) => {
       return (
         <tr key={index}>
           <td>{index + 1}.</td>
