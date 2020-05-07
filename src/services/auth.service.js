@@ -93,6 +93,8 @@ export default class AuthService {
       }),
     }).then((res) => {
       localStorage.removeItem("id_token");
+      localStorage.removeItem("name");
+      localStorage.removeItem("id");
       return Promise.resolve(res);
     });
   }

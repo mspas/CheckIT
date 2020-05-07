@@ -26,32 +26,33 @@ class LectureList extends React.Component {
   }
 
   handlePressenceOverview() {
-    var counter = 0;
-    var overviewData = [];
-    this.props.lectures.lectures.forEach((lecture) => {
-      fetch(this.state.url + "/api/lectures/" + lecture.id + "/details", {
+    console.log(this.props.courseData.courseId);
+    fetch(
+      this.state.url +
+        "/api/course/" +
+        this.props.courseData.courseId +
+        "/summary",
+      {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-      })
-        .then((response) => response.json())
-        .then((json) => {
-          overviewData.push(json);
-          counter++;
-          if (counter === this.props.lectures.lectures.length) {
-            this.setState({
-              overviewData: overviewData,
-              courseOverviewClicked: true,
-              isLoadingOverview: false,
-            });
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-          alert("Error database fetch data: lecture data");
+      }
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        console.log("chuj");
+        console.log(JSON.stringify(json));
+        this.setState({
+          overviewData: json,
+          courseOverviewClicked: true,
+          isLoadingOverview: false,
         });
-    });
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Error database fetch data: lecture data");
+      });
   }
 
   onBackClick() {
@@ -141,7 +142,7 @@ class LectureList extends React.Component {
             <LecturePresence
               courseName={this.props.lectures.name}
               courseData={this.props.courseData}
-              lextureIndex={this.props.lextureIndex}
+              lectureIndex={this.props.lectureIndex}
               lectureData={this.props.lectureData}
               students={this.props.courseData.students}
               isLoading={this.props.presenceLoading}

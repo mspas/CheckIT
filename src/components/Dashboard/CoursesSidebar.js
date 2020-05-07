@@ -49,6 +49,13 @@ class CoursesSidebar extends React.Component {
           <span>
             <FontAwesomeIcon className="panel-icon" icon={faBars} />
           </span>
+          <Link
+            className="btn-schedule"
+            to=""
+            onClick={this.props.onScheduleClick}
+          >
+            <span className="course-name">Your Week Schedule</span>
+          </Link>
           <ul>{courses}</ul>
         </div>
       </div>

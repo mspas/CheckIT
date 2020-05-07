@@ -33,7 +33,7 @@ class LecturePresence extends React.Component {
           "(" +
           this.props.courseData.courseCode +
           ") - Lecture" +
-          this.props.lextureIndex +
+          this.props.lectureIndex +
           ".pdf"
       );
     });
@@ -55,10 +55,10 @@ class LecturePresence extends React.Component {
           <td>{data.name}</td>
           <td className="text-center">{data.indeks}</td>
           <td>{data.email}</td>
-          <td className="text-center">{data.presences}</td>
           <td className="text-center">
-            {this.isPresent(data.indeks) && "Yes"}
+            {this.isPresent(data.indeks) ? "Yes" : " "}
           </td>
+          <td className="text-center">{data.presences}</td>
         </tr>
       );
     });
@@ -75,7 +75,7 @@ class LecturePresence extends React.Component {
               "(" +
               this.props.courseData.courseCode +
               ") - Lecture" +
-              this.props.lextureIndex
+              this.props.lectureIndex
             }
             sheet="tablexls"
             buttonText="Export to XLS"
@@ -95,8 +95,8 @@ class LecturePresence extends React.Component {
               <th>Name</th>
               <th>Student's number</th>
               <th>Email</th>
-              <th>Number of presences</th>
               <th>Present</th>
+              <th>Presence in total</th>
             </tr>
           </thead>
           <tbody>{students}</tbody>

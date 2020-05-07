@@ -22,26 +22,28 @@ class Dashboard extends React.Component {
       loggedName: "",
       lecturesLoading: false,
       coursesLoading: true,
-      courses: [],
-      courseData: null,
-      lectures: [],
-      activeFlags: [],
-      clickedLectureId: -1,
-      lextureIndex: -1,
-      lectureData: null,
       presenceLoading: true,
+      scheduleLoading: true,
       courseOverviewClicked: false,
-      wasClicked: true,
+      clickedLectureId: -1,
+      lectureIndex: -1,
+      courses: [],
+      activeFlags: [],
+      lectures: [],
+      courseData: null,
+      lectureData: null,
       overviewData: null,
+      scheduleData: null,
     };
 
     this.handleCourseClick = this.handleCourseClick.bind(this);
     this.handleLectureClick = this.handleLectureClick.bind(this);
-    this.handleLectureClick = this.handleLectureClick.bind(this);
+    this.handleLogoutClick = this.handleLogoutClick.bind(this);
     this.handleBackClick = this.handleBackClick.bind(this);
-    this.handleLinks = this.handleLinks.bind(this);
-    this.handleLectures = this.handleLectures.bind(this);
     this.handleOverviewClick = this.handleOverviewClick.bind(this);
+    this.handleScheduleClick = this.handleScheduleClick.bind(this);
+    this.handleActiveLinks = this.handleActiveLinks.bind(this);
+    this.handleLecturesForCourse = this.handleLecturesForCourse.bind(this);
   }
 
   componentDidMount() {
@@ -75,12 +77,74 @@ class Dashboard extends React.Component {
         console.error(err);
         alert("Error database fetch data: courses");
       });
+
+    fetch(
+      this.state.url + "/api/lecturers/" + this.state.lecturer_id + "/schedule",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({
+          scheduleData: json,
+          scheduleLoading: false,
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Error database fetch data: courses");
+      });
+  }
+
+  render() {
+    return (
+      <div>
+        <CoursesSidebar
+          history={this.props.history}
+          courses={this.state.courses}
+          loggedName={this.state.loggedName}
+          isLoading={this.state.coursesLoading}
+          activeFlags={this.state.activeFlags}
+          onCourseClick={this.handleCourseClick}
+          onScheduleClick={this.onScheduleClick}
+        />
+        <Container className="content">
+          <Link className="btn-logout" to="" onClick={this.handleLogoutClick}>
+            <span>Logout</span>
+          </Link>
+          <div className="main-container">
+            <LectureList
+              courseData={this.state.courseData}
+              lectures={this.state.lectures}
+              lectureIndex={this.state.lectureIndex}
+              isLoading={this.state.lecturesLoading}
+              presenceLoading={this.state.presenceLoading}
+              clickedLectureId={this.state.clickedLectureId}
+              lectureData={this.state.lectureData}
+              courseOverviewClicked={this.state.courseOverviewClicked}
+              overviewData={this.state.overviewData}
+              isLoadingOverview={this.state.isLoadingOverview}
+              onLectureClick={this.handleLectureClick}
+              onBackClick={this.handleBackClick}
+              onOverviewClick={this.handleOverviewClick}
+            />
+          </div>
+        </Container>
+      </div>
+    );
   }
 
   handleLogoutClick() {
-    this._auth.logout(localStorage.getItem("id"), false); //HARDCODE
-    this.props.history.replace("/login");
+    this._auth.logout(localStorage.getItem("id"), false).then((res) => {
+      this.props.history.replace("/login");
+    });
   }
+
+  handleScheduleClick() {}
 
   handleCourseClick(data, index) {
     this.setState({
@@ -89,7 +153,7 @@ class Dashboard extends React.Component {
       courseOverviewClicked: false,
       isLoadingOverview: true,
     });
-    this.handleLinks(data.id, index);
+    this.handleActiveLinks(data.id, index);
   }
 
   handleLectureClick(data, index, event) {
@@ -103,7 +167,7 @@ class Dashboard extends React.Component {
       .then((json) => {
         this.setState({
           clickedLectureId: index + 1,
-          lextureIndex: index + 1,
+          lectureIndex: index + 1,
           lectureData: json,
           presenceLoading: false,
         });
@@ -121,7 +185,7 @@ class Dashboard extends React.Component {
     });
   }
 
-  handleLinks(course_id, index) {
+  handleActiveLinks(course_id, index) {
     let array = this.state.activeFlags;
     for (let i = 0; i < array.length; i++) {
       array[i] = false;
@@ -131,12 +195,12 @@ class Dashboard extends React.Component {
         activeFlags: array,
       },
       () => {
-        this.handleLectures(course_id, index);
+        this.handleLecturesForCourse(course_id, index);
       }
     );
   }
 
-  handleLectures(course_id, index) {
+  handleLecturesForCourse(course_id, index) {
     let array;
     array = this.state.activeFlags;
     array[index] = true;
@@ -165,69 +229,30 @@ class Dashboard extends React.Component {
   }
 
   handleOverviewClick() {
-    var counter = 0;
-    var overviewData = [];
-    this.state.lectures.lectures.forEach((lecture) => {
-      fetch(this.state.url + "/api/lectures/" + lecture.id + "/details", {
+    fetch(
+      this.state.url +
+        "/api/courses/" +
+        this.state.courseData.courseId +
+        "/summary",
+      {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-      })
-        .then((response) => response.json())
-        .then((json) => {
-          overviewData.push(json);
-          counter++;
-          if (counter === this.state.lectures.lectures.length) {
-            this.setState({
-              overviewData: overviewData,
-              courseOverviewClicked: true,
-              isLoadingOverview: false,
-            });
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-          alert("Error database fetch data: lecture data");
+      }
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({
+          overviewData: json,
+          courseOverviewClicked: true,
+          isLoadingOverview: false,
         });
-    });
-  }
-
-  render() {
-    return (
-      <div>
-        <CoursesSidebar
-          history={this.props.history}
-          courses={this.state.courses}
-          loggedName={this.state.loggedName}
-          isLoading={this.state.coursesLoading}
-          activeFlags={this.state.activeFlags}
-          onCourseClick={this.handleCourseClick}
-        />
-        <Container className="content">
-          <Link className="btn-logout" to="" onClick={this.handleLogoutClick}>
-            <span>Logout</span>
-          </Link>
-          <div className="main-container">
-            <LectureList
-              courseData={this.state.courseData}
-              lectures={this.state.lectures}
-              lextureIndex={this.state.lextureIndex}
-              isLoading={this.state.lecturesLoading}
-              presenceLoading={this.state.presenceLoading}
-              clickedLectureId={this.state.clickedLectureId}
-              lectureData={this.state.lectureData}
-              courseOverviewClicked={this.state.courseOverviewClicked}
-              overviewData={this.state.overviewData}
-              isLoadingOverview={this.state.isLoadingOverview}
-              onLectureClick={this.handleLectureClick}
-              onBackClick={this.handleBackClick}
-              onOverviewClick={this.handleOverviewClick}
-            />
-          </div>
-        </Container>
-      </div>
-    );
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Error database fetch data: lecture data");
+      });
   }
 }
 export default withAuth(Dashboard);

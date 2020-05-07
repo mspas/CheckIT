@@ -8,7 +8,20 @@ import "../../styles/lecture-presence.sass";
 class CourseOverview extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      dummyLectures: [],
+    };
     this.handleExportToPDF = this.handleExportToPDF.bind(this);
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    let temp = [];
+    for (let i = 0; i < props.overviewData.lecturesAmount; i++) {
+      temp.push(i + 1);
+    }
+    return {
+      dummyLectures: temp,
+    };
   }
 
   handleExportToPDF() {
@@ -27,16 +40,10 @@ class CourseOverview extends React.Component {
     });
   }
 
-  isPresent(lectureId, studentNumber) {
-    this.props.overviewData.forEach((lecture) => {
-      if (lecture.id === lectureId) {
-        lecture.students.forEach((student) => {
-          if (student.indeks === studentNumber) {
-            return true;
-          }
-        });
-      }
-    });
+  isPresent(lectureId, studentPresences) {
+    for (let i = 0; i < studentPresences.length; i++) {
+      if (studentPresences[i] === lectureId) return true;
+    }
     return false;
   }
 
@@ -49,26 +56,26 @@ class CourseOverview extends React.Component {
       );
     }
 
-    let students = this.props.students.map((data, index) => {
+    let students = this.props.overviewData.students.map((data, index) => {
       return (
         <tr key={index}>
           <td>{index + 1}.</td>
-          <td>{data.name}</td>
-          <td className="text-center">{data.indeks}</td>
-          {this.props.overviewData.map((lect, i) => {
+          <td>{data.student.name}</td>
+          <td className="text-center">{data.student.indeks}</td>
+          {this.state.dummyLectures.map((lect, i) => {
             return (
               <td className="text-center" key={i}>
-                {this.isPresent(lect.id, data.indeks) && "Y"}
+                {this.isPresent(lect, data.presences) ? "Yes" : " "}
               </td>
             );
           })}
-          <td className="text-center">{data.presences}</td>
+          <td className="text-center">{data.presences.length}</td>
         </tr>
       );
     });
 
-    let headers = this.props.overviewData.map((data, index) => {
-      return <th key={index}>{"Lecture " + (index + 1)}</th>;
+    let headers = this.state.dummyLectures.map((data, index) => {
+      return <th key={index}>{"Lecture " + data}</th>;
     });
 
     return (
@@ -102,7 +109,7 @@ class CourseOverview extends React.Component {
               <th>Name</th>
               <th>Student's number</th>
               {headers}
-              <th>Number of presences</th>
+              <th>Presence in total</th>
             </tr>
           </thead>
           <tbody>{students}</tbody>
