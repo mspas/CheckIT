@@ -1,8 +1,69 @@
 import React from "react";
-import { Spinner } from "react-bootstrap";
+import { Spinner, Table } from "react-bootstrap";
 import "../../styles/schedule.sass";
 
+const dummyDay = "2000-01-01T";
+
 class WeekSchedule extends React.Component {
+  constructor(props) {
+    super(props);
+    let hours = [];
+    for (let i = 7; i < 22; i++) {
+      let hour = ("0" + i).slice(-2) + ":00";
+      hours.push(new Date(dummyDay + hour));
+    }
+    this.state = {
+      hoursD: hours,
+    };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.scheduleData !== null) {
+      let i = 0;
+      this.props.scheduleData.schedule.forEach((day) => {
+        day.lectures.forEach((lect) => {
+          let tempDate = new Date(dummyDay + lect.time);
+
+          let blockId = "lectureD" + i + "H" + tempDate.getHours();
+          let block = document.getElementById(blockId);
+
+          let value = (100 * lect.duration) / 60;
+          block.style.height = "" + value + "%";
+
+          let endHourTemp =
+            (tempDate.getHours() * 60 + tempDate.getMinutes() + lect.duration) /
+            60;
+
+          let minutes = (endHourTemp - Math.floor(endHourTemp)) * 60;
+
+          let endHour = "" + Math.floor(endHourTemp) + ":" + minutes;
+
+          block.innerHTML =
+            "<p>" +
+            lect.course +
+            "</p><p>" +
+            lect.building +
+            " " +
+            lect.room +
+            "</p><p>" +
+            lect.time +
+            "-" +
+            endHour +
+            "</p>";
+        });
+        i++;
+      });
+    }
+  }
+
+  isLecture(lectures, hour) {
+    for (let i = 0; i < lectures.length; i++) {
+      let lecHour = new Date(dummyDay + lectures[i].time).getHours();
+      if (hour.getHours() === lecHour) return true;
+    }
+    return false;
+  }
+
   render() {
     if (this.props.isLoading) {
       return (
@@ -12,7 +73,50 @@ class WeekSchedule extends React.Component {
       );
     }
 
-    return <div className="schedule-wrap">siemano</div>;
+    let days = this.props.scheduleData.schedule.map((data, index) => {
+      return <th key={index}>{data.day}</th>;
+    });
+
+    let hoursList = this.state.hoursD.map((hour, i) => {
+      let hourS =
+        "" +
+        ("0" + hour.getHours()).slice(-2) +
+        ":" +
+        ("0" + hour.getMinutes()).slice(-2);
+      return (
+        <tr key={i}>
+          <td className="hour">{hourS}</td>
+          {this.props.scheduleData.schedule.map((data, index) => {
+            return (
+              <td key={index}>
+                {this.isLecture(data.lectures, hour) ? (
+                  <div
+                    id={"lectureD" + index + "H" + hour.getHours()}
+                    className="lecture-block"
+                  ></div>
+                ) : (
+                  " "
+                )}
+              </td>
+            );
+          })}
+        </tr>
+      );
+    });
+
+    return (
+      <div className="schedule-wrap">
+        <Table responsive bordered>
+          <thead>
+            <tr>
+              <th className="hour">Hour</th>
+              {days}
+            </tr>
+          </thead>
+          <tbody>{hoursList}</tbody>
+        </Table>
+      </div>
+    );
   }
 }
 export default WeekSchedule;

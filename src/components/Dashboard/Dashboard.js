@@ -166,7 +166,10 @@ class Dashboard extends React.Component {
                 eraseLecture={this.props.eraseLecture}
               />
             ) : (
-              <WeekSchedule scheduleData={this.state.scheduleData} />
+              <WeekSchedule
+                scheduleData={this.state.scheduleData}
+                isLoading={this.state.scheduleLoading}
+              />
             )}
           </div>
         </Container>
