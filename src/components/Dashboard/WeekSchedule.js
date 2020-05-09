@@ -3,6 +3,7 @@ import { Spinner, Table } from "react-bootstrap";
 import "../../styles/schedule.sass";
 
 const dummyDay = "2000-01-01T";
+const colors = ["#f2fac2", "#c4fada", "#fde0ed", "#b0c0c0", "#cbf0f0"];
 
 class WeekSchedule extends React.Component {
   constructor(props) {
@@ -28,7 +29,13 @@ class WeekSchedule extends React.Component {
           let block = document.getElementById(blockId);
 
           let value = (100 * lect.duration) / 60;
+          let startMinutesDiff = (100 * tempDate.getMinutes()) / 60;
+
+          block.style.top =
+            tempDate.getMinutes() > 0 ? startMinutesDiff + "%" : "0";
           block.style.height = "" + value + "%";
+          block.style.background =
+            colors[Math.floor(Math.random() * colors.length)];
 
           let endHourTemp =
             (tempDate.getHours() * 60 + tempDate.getMinutes() + lect.duration) /
@@ -40,7 +47,8 @@ class WeekSchedule extends React.Component {
 
           block.innerHTML =
             "<p>" +
-            lect.course +
+            lect.course.slice(0, 20) +
+            "..." +
             "</p><p>" +
             lect.building +
             " " +

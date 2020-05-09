@@ -1,20 +1,26 @@
 @import '../_variables'
 @import '../_mixins'
 
+$blockWidth: 100%
+$margin: 5px
+
 .schedule-wrap
     padding: 80px 30px
     table
         table-layout: fixed
+        .hour
+            user-select: none
         td
             position: relative
             .lecture-block
                 position: absolute
                 top: 0
-                left: 0
-                width: 100%
+                left: $margin
+                width: clac(#{$blockWidth} - #{$margin*2})
                 min-height: 100%
-                padding: 5px
+                padding: $margin
                 font-size: 12px
                 background: $green
+                @include border-shadow(1px, 1px, 1px, #00000044)
                 p 
                     margin: 0

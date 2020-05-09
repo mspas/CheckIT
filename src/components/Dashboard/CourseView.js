@@ -2,14 +2,14 @@ import React from "react";
 import "../../styles/lecture.sass";
 import { Link } from "react-scroll";
 import { Spinner, Button } from "react-bootstrap";
-import ApiService from "../../services/api.service";
+import AuthService from "../../services/auth.service";
 import LecturePresence from "./LecturePresence";
 import PresenceSummary from "./PresenceSummary";
 
 class CourseView extends React.Component {
   constructor(props) {
     super(props);
-    this._api = new ApiService();
+    this._auth = new AuthService();
 
     this.state = {
       url: "http://25.23.181.97:8090",
@@ -47,6 +47,7 @@ class CourseView extends React.Component {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "X-Authorization": "Bearer " + this._auth.getToken(),
       },
     })
       .then((response) => response.json())
@@ -73,6 +74,7 @@ class CourseView extends React.Component {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "X-Authorization": "Bearer " + this._auth.getToken(),
         },
       }
     )

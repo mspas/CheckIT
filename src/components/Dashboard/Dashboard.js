@@ -18,8 +18,8 @@ class Dashboard extends React.Component {
 
     this.state = {
       url: "http://25.23.181.97:8090",
-      lecturer_id: 5,
-      loggedName: "",
+      lecturer_id: this._auth.getUserId(this._auth.getToken()),
+      loggedName: this._auth.getUserId(this._auth.getToken()),
       lecturesLoading: false,
       coursesLoading: true,
       scheduleLoading: true,
@@ -35,28 +35,20 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({
-      loggedName: localStorage.getItem("name"),
-    });
-    fetch(
-      this.state.url + "/api/lecturers/" + this.state.lecturer_id + "/courses",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((json) => {
+    this._auth
+      .fetch(
+        this.state.url +
+          "/api/lecturers/" +
+          this.state.lecturer_id +
+          "/courses",
+        { method: "GET" }
+      )
+      .then((res) => {
+        console.log(res);
         this.setState({
-          courses: json.courses,
+          courses: res.courses,
           coursesLoading: false,
         });
-      })
-      .catch((err) => {
-        console.error(err);
-        alert("Error database fetch data: courses");
       });
 
     fetch(
@@ -65,6 +57,7 @@ class Dashboard extends React.Component {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "X-Authorization": "Bearer " + this._auth.getToken(),
         },
       }
     )
@@ -122,6 +115,7 @@ class Dashboard extends React.Component {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "X-Authorization": "Bearer " + this._auth.getToken(),
       },
     })
       .then((response) => response.json())

@@ -16,7 +16,7 @@ export default function withAuth(AuthComponent) {
         this.props.history.replace("/login");
       } else {
         try {
-          const profile = _auth.getProfile();
+          const profile = _auth.getName(_auth.getToken());
           this.setState({
             user: profile,
           });
