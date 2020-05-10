@@ -1,14 +1,23 @@
 import React from "react";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { Table, Spinner, Button } from "react-bootstrap";
+import { Link } from "react-scroll";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import "../../styles/lecture-presence.sass";
+import AuthService from "../../services/auth.service";
 
 class LecturePresence extends React.Component {
   constructor(props) {
     super(props);
+    this._auth = new AuthService();
+
+    this.state = {
+      url: "http://25.23.181.97:8090",
+    };
+
     this.handleExportToPDF = this.handleExportToPDF.bind(this);
+    this.onMarkPresenceClick = this.onMarkPresenceClick.bind(this);
   }
 
   isPresent(indeks) {
@@ -39,6 +48,23 @@ class LecturePresence extends React.Component {
     });
   }
 
+  onMarkPresenceClick(data, index) {
+    let lectureId = this.props.presenceData.lectureId;
+    let studentId = data.id;
+    console.log(lectureId, studentId);
+    this._auth
+      .fetch(this.state.url + "/api/lectures/presence", {
+        method: "POST",
+        body: JSON.stringify({
+          lectureId,
+          studentId,
+        }),
+      })
+      .then((res) => {
+        alert(data.name + " was marked as present");
+      });
+  }
+
   render() {
     if (this.props.isLoading) {
       return (
@@ -59,6 +85,19 @@ class LecturePresence extends React.Component {
             {this.isPresent(data.indeks) ? "Yes" : " "}
           </td>
           <td className="text-center">{data.presences}</td>
+          <td className="mark-presence">
+            {!this.isPresent(data.indeks) ? (
+              <Link
+                className="btn-mark-presence"
+                to=""
+                onClick={this.onMarkPresenceClick.bind(null, data, index)}
+              >
+                <span>Present</span>
+              </Link>
+            ) : (
+              " "
+            )}
+          </td>
         </tr>
       );
     });
@@ -97,6 +136,7 @@ class LecturePresence extends React.Component {
               <th>Email</th>
               <th>Present</th>
               <th>Presence in total</th>
+              <th>Mark presence</th>
             </tr>
           </thead>
           <tbody>{students}</tbody>

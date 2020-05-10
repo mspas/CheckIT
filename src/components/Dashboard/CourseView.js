@@ -43,52 +43,36 @@ class CourseView extends React.Component {
   onLectureClick(data, index, event) {
     this.props.changeLecture(data.id);
 
-    fetch(this.state.url + "/api/lectures/" + data.id + "/details", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Authorization": "Bearer " + this._auth.getToken(),
-      },
-    })
-      .then((response) => response.json())
-      .then((json) => {
+    this._auth
+      .fetch(this.state.url + "/api/lectures/" + data.id + "/details", {
+        method: "GET",
+      })
+      .then((res) => {
         this.setState({
           lectureIndex: index + 1,
-          presenceData: json,
+          presenceData: res,
           presenceLoading: false,
         });
-      })
-      .catch((err) => {
-        console.error(err);
-        alert("Error database fetch data: lecture data");
       });
   }
 
   onOverviewClick() {
-    fetch(
-      this.state.url +
-        "/api/courses/" +
-        this.props.courseData.courseId +
-        "/summary",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Authorization": "Bearer " + this._auth.getToken(),
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((json) => {
+    this._auth
+      .fetch(
+        this.state.url +
+          "/api/courses/" +
+          this.props.courseData.courseId +
+          "/summary",
+        {
+          method: "GET",
+        }
+      )
+      .then((res) => {
         this.setState({
-          overviewData: json,
+          overviewData: res,
           courseOverviewClicked: true,
           isLoadingOverview: false,
         });
-      })
-      .catch((err) => {
-        console.error(err);
-        alert("Error database fetch data: lecture data");
       });
   }
 

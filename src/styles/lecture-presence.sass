@@ -25,3 +25,47 @@ th
             &:hover
                 color: #fff
                 background: $blue
+    .mark-presence
+        position: relative
+        .btn-mark-presence
+            position: absolute
+            cursor: pointer
+            left: 0px
+            top: 0px
+            width: 98%
+            height: 100%
+            padding: 13px 14px
+            font-size: 12px
+            letter-spacing: 3px
+            border: 2px solid #111
+            transition: 0.4s ease-in-out
+            span
+                position: relative
+                z-index: 2
+                text-transform: uppercase
+            &::before
+                content: ''
+                position: absolute
+                bottom: 8px
+                left: -2px
+                width: calc( 100% + 8px )
+                height: calc( 100% - 16px )
+                background: $primary
+                transition: 0.3s ease-in-out
+                transform: scaleY(1)
+            &:hover::before
+                transform: scaleY(0)
+            &::after
+                content: ''
+                position: absolute
+                bottom: -2px
+                left: 8px
+                width: calc( 100% - 16px )
+                height: calc( 100% + 4px )
+                background: $primary
+                transition: 0.3s ease-in-out
+                transform: scaleX(1)
+            &:hover::after
+                transform: scaleX(0)
+            &:hover
+                background: #ffffff18

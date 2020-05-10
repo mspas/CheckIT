@@ -19,7 +19,7 @@ class Dashboard extends React.Component {
     this.state = {
       url: "http://25.23.181.97:8090",
       lecturer_id: this._auth.getUserId(this._auth.getToken()),
-      loggedName: this._auth.getUserId(this._auth.getToken()),
+      loggedName: this._auth.getName(this._auth.getToken()),
       lecturesLoading: false,
       coursesLoading: true,
       scheduleLoading: true,
@@ -44,27 +44,23 @@ class Dashboard extends React.Component {
         { method: "GET" }
       )
       .then((res) => {
-        console.log(res);
         this.setState({
           courses: res.courses,
           coursesLoading: false,
         });
       });
 
-    fetch(
-      this.state.url + "/api/lecturers/" + this.state.lecturer_id + "/schedule",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Authorization": "Bearer " + this._auth.getToken(),
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        let date1 = new Date(json.schedule[0].date);
-        let date2 = new Date(json.schedule[6].date);
+    this._auth
+      .fetch(
+        this.state.url +
+          "/api/lecturers/" +
+          this.state.lecturer_id +
+          "/schedule",
+        { method: "GET" }
+      )
+      .then((res) => {
+        let date1 = new Date(res.schedule[0].date);
+        let date2 = new Date(res.schedule[6].date);
         let date =
           ("0" + date1.getDate()).slice(-2) +
           " " +
@@ -74,14 +70,10 @@ class Dashboard extends React.Component {
           " " +
           this._data.getMonthName(date2.getMonth());
         this.setState({
-          scheduleData: json,
+          scheduleData: res,
           scheduleLoading: false,
           dateString: date,
         });
-      })
-      .catch((err) => {
-        console.error(err);
-        alert("Error database fetch data: schedule");
       });
   }
 
@@ -110,25 +102,17 @@ class Dashboard extends React.Component {
 
   handleLecturesForCourse(course_id) {
     let lecturesSet = this.getLecturesSet(course_id);
-
-    fetch(this.state.url + "/api/courses/" + course_id + "/details", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Authorization": "Bearer " + this._auth.getToken(),
-      },
-    })
-      .then((response) => response.json())
-      .then((json) => {
+    this._auth
+      .fetch(this.state.url + "/api/courses/" + course_id + "/details", {
+        method: "GET",
+      })
+      .then((res) => {
         this.setState({
-          courseData: json,
+          courseData: res,
           lectures: lecturesSet,
           lecturesLoading: false,
         });
-      })
-      .catch((err) => {
-        console.error(err);
-        alert("Error database fetch data: course data");
+        console.log(JSON.stringify(res));
       });
   }
 

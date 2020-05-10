@@ -80,10 +80,6 @@ export default class AuthService {
   }
 
   logout(id, logged) {
-    //let id = 38;
-    // Clear user token and profile data from localStorage
-    //let id = this.getId(this.getToken());
-
     return this.fetch(`${this.domain}/api/logout`, {
       method: "PATCH",
       headers: {
