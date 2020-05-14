@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/Attendance-tracker-app/static/css/main.8ca4b1b6.chunk.css",
-    "main.js": "/Attendance-tracker-app/static/js/main.f366f2c9.chunk.js",
-    "main.js.map": "/Attendance-tracker-app/static/js/main.f366f2c9.chunk.js.map",
-    "runtime-main.js": "/Attendance-tracker-app/static/js/runtime-main.5890a46c.js",
-    "runtime-main.js.map": "/Attendance-tracker-app/static/js/runtime-main.5890a46c.js.map",
-    "static/css/2.de424728.chunk.css": "/Attendance-tracker-app/static/css/2.de424728.chunk.css",
-    "static/js/2.5d0c5f9c.chunk.js": "/Attendance-tracker-app/static/js/2.5d0c5f9c.chunk.js",
-    "static/js/2.5d0c5f9c.chunk.js.map": "/Attendance-tracker-app/static/js/2.5d0c5f9c.chunk.js.map",
-    "index.html": "/Attendance-tracker-app/index.html",
-    "precache-manifest.4bf72deaac8663bf64ae7ce3b54d909f.js": "/Attendance-tracker-app/precache-manifest.4bf72deaac8663bf64ae7ce3b54d909f.js",
-    "service-worker.js": "/Attendance-tracker-app/service-worker.js",
-    "static/css/2.de424728.chunk.css.map": "/Attendance-tracker-app/static/css/2.de424728.chunk.css.map",
-    "static/css/main.8ca4b1b6.chunk.css.map": "/Attendance-tracker-app/static/css/main.8ca4b1b6.chunk.css.map",
-    "static/js/2.5d0c5f9c.chunk.js.LICENSE.txt": "/Attendance-tracker-app/static/js/2.5d0c5f9c.chunk.js.LICENSE.txt"
+    "main.css": "/CheckIT/static/css/main.8ca4b1b6.chunk.css",
+    "main.js": "/CheckIT/static/js/main.17f4b313.chunk.js",
+    "main.js.map": "/CheckIT/static/js/main.17f4b313.chunk.js.map",
+    "runtime-main.js": "/CheckIT/static/js/runtime-main.eeab53a8.js",
+    "runtime-main.js.map": "/CheckIT/static/js/runtime-main.eeab53a8.js.map",
+    "static/css/2.de424728.chunk.css": "/CheckIT/static/css/2.de424728.chunk.css",
+    "static/js/2.5d0c5f9c.chunk.js": "/CheckIT/static/js/2.5d0c5f9c.chunk.js",
+    "static/js/2.5d0c5f9c.chunk.js.map": "/CheckIT/static/js/2.5d0c5f9c.chunk.js.map",
+    "index.html": "/CheckIT/index.html",
+    "precache-manifest.5858a50f98f81b8f7e82d184d554c4ca.js": "/CheckIT/precache-manifest.5858a50f98f81b8f7e82d184d554c4ca.js",
+    "service-worker.js": "/CheckIT/service-worker.js",
+    "static/css/2.de424728.chunk.css.map": "/CheckIT/static/css/2.de424728.chunk.css.map",
+    "static/css/main.8ca4b1b6.chunk.css.map": "/CheckIT/static/css/main.8ca4b1b6.chunk.css.map",
+    "static/js/2.5d0c5f9c.chunk.js.LICENSE.txt": "/CheckIT/static/js/2.5d0c5f9c.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.5890a46c.js",
+    "static/js/runtime-main.eeab53a8.js",
     "static/css/2.de424728.chunk.css",
     "static/js/2.5d0c5f9c.chunk.js",
     "static/css/main.8ca4b1b6.chunk.css",
-    "static/js/main.f366f2c9.chunk.js"
+    "static/js/main.17f4b313.chunk.js"
   ]
 }
