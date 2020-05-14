@@ -1,7 +1,7 @@
 import React from "react";
 import "../../styles/dashboard.sass";
 import AuthService from "../../services/auth.service";
-import Sidebar from "./Sidebar.container";
+import Sidebar from "./Sidebar";
 import { Link } from "react-scroll";
 import { Container } from "react-bootstrap";
 import ApiServiceMock from "../../services/api.mock.service";
@@ -35,7 +35,9 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    this._auth
+    this.getDataInitMockup(); //since it's a demo version the api calls are simulated with mockup data previously saved from the acctual api and db
+
+    /*this._auth
       .fetch(
         this.state.url +
           "/api/lecturers/" +
@@ -74,7 +76,7 @@ class Dashboard extends React.Component {
           scheduleLoading: false,
           dateString: date,
         });
-      });
+      });*/
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -83,7 +85,8 @@ class Dashboard extends React.Component {
         lecturesLoading: true,
       });
       if (this.props.courseId !== -1)
-        this.handleLecturesForCourse(this.props.courseId);
+        this.handleLecturesForCourseMockup(this.props.courseId);
+      //this.handleLecturesForCourse(this.props.courseId);
     }
   }
 
@@ -123,6 +126,12 @@ class Dashboard extends React.Component {
           courses={this.state.courses}
           loggedName={this.state.loggedName}
           isLoading={this.state.coursesLoading}
+          courseId={this.props.courseId}
+          lectureId={this.props.lectureId}
+          changeCourse={this.props.changeCourse}
+          eraseCourse={this.props.eraseCourse}
+          changeLecture={this.props.changeLecture}
+          eraseLecture={this.props.eraseLecture}
         />
         <Container className="content">
           <Link className="btn-logout" to="" onClick={this.handleLogoutClick}>
@@ -154,5 +163,44 @@ class Dashboard extends React.Component {
       </div>
     );
   }
+
+  getDataInitMockup() {
+    this._apiMock.getLecturersCourses().then((res) => {
+      this.setState({
+        courses: res.courses,
+        coursesLoading: false,
+      });
+    });
+
+    this._apiMock.getLecturersSchedule().then((res) => {
+      let date1 = new Date(res.schedule[0].date);
+      let date2 = new Date(res.schedule[6].date);
+      let date =
+        ("0" + date1.getDate()).slice(-2) +
+        " " +
+        this._data.getMonthName(date1.getMonth()) +
+        " - " +
+        ("0" + date2.getDate()).slice(-2) +
+        " " +
+        this._data.getMonthName(date2.getMonth());
+      this.setState({
+        scheduleData: res,
+        scheduleLoading: false,
+        dateString: date,
+      });
+    });
+  }
+
+  handleLecturesForCourseMockup(course_id) {
+    let lecturesSet = this.getLecturesSet(course_id);
+    this._apiMock.getCoursesDetails().then((res) => {
+      this.setState({
+        courseData: res,
+        lectures: lecturesSet,
+        lecturesLoading: false,
+      });
+    });
+  }
 }
+
 export default Dashboard;

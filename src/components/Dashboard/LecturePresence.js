@@ -6,6 +6,8 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import "../../styles/lecture-presence.sass";
 import AuthService from "../../services/auth.service";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 class LecturePresence extends React.Component {
   constructor(props) {
@@ -51,8 +53,9 @@ class LecturePresence extends React.Component {
   onMarkPresenceClick(data, index) {
     let lectureId = this.props.presenceData.lectureId;
     let studentId = data.id;
-    console.log(lectureId, studentId);
-    this._auth
+
+    alert("Funcionality turned off in this demo version");
+    /*this._auth
       .fetch(this.state.url + "/api/lectures/presence", {
         method: "POST",
         body: JSON.stringify({
@@ -62,7 +65,7 @@ class LecturePresence extends React.Component {
       })
       .then((res) => {
         alert(data.name + " was marked as present");
-      });
+      });*/
   }
 
   render() {
@@ -92,7 +95,9 @@ class LecturePresence extends React.Component {
                 to=""
                 onClick={this.onMarkPresenceClick.bind(null, data, index)}
               >
-                <span>Present</span>
+                <span>
+                  <FontAwesomeIcon icon={faCheck} />
+                </span>
               </Link>
             ) : (
               " "

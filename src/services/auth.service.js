@@ -1,6 +1,10 @@
 import decode from "jwt-decode";
+import ApiServiceMock from "./api.mock.service";
+
 export default class AuthService {
   constructor(domain) {
+    this._apiMock = new ApiServiceMock();
+
     this.domain = "http://25.23.181.97:8090";
     this.fetch = this.fetch.bind(this);
     this.login = this.login.bind(this);
@@ -10,7 +14,10 @@ export default class AuthService {
   }
 
   login(email, password) {
-    return this.fetch(`${this.domain}/login`, {
+    this.setToken(this._apiMock.getExampleToken());
+    return Promise.resolve(this._apiMock.getExampleToken());
+
+    /*return this.fetch(`${this.domain}/login`, {
       method: "POST",
       body: JSON.stringify({
         email,
@@ -20,14 +27,12 @@ export default class AuthService {
       console.log(res.token);
       this.setToken(res.token);
       return Promise.resolve(res);
-    });
-    //localStorage.setItem("id_token", username);
-    //return Promise.resolve(true);
+    });*/
   }
 
   loggedIn() {
     const token = this.getToken();
-    //return !!token && !this.isTokenExpired(token); // handwaiving here
+    //return !!token && !this.isTokenExpired(token);
     let check = token ? true : false;
     return check;
   }
@@ -80,7 +85,10 @@ export default class AuthService {
   }
 
   logout(id, logged) {
-    return this.fetch(`${this.domain}/api/logout`, {
+    localStorage.removeItem("token");
+    return Promise.resolve(true);
+
+    /*return this.fetch(`${this.domain}/api/logout`, {
       method: "PATCH",
       headers: {
         Accept: "application/json",
@@ -94,7 +102,7 @@ export default class AuthService {
     }).then((res) => {
       localStorage.removeItem("token");
       return Promise.resolve(res);
-    });
+    });*/
   }
 
   fetch(url, options) {

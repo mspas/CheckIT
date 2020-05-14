@@ -5,11 +5,13 @@ import { Spinner, Button } from "react-bootstrap";
 import AuthService from "../../services/auth.service";
 import LecturePresence from "./LecturePresence";
 import PresenceSummary from "./PresenceSummary";
+import ApiServiceMock from "../../services/api.mock.service";
 
 class CourseView extends React.Component {
   constructor(props) {
     super(props);
     this._auth = new AuthService();
+    this._apiMock = new ApiServiceMock();
 
     this.state = {
       url: "http://25.23.181.97:8090",
@@ -41,7 +43,9 @@ class CourseView extends React.Component {
   }
 
   onLectureClick(data, index, event) {
-    this.props.changeLecture(data.id);
+    this.onLectureClickMockup(data, index);
+
+    /*this.props.changeLecture(data.id);
 
     this._auth
       .fetch(this.state.url + "/api/lectures/" + data.id + "/details", {
@@ -53,11 +57,12 @@ class CourseView extends React.Component {
           presenceData: res,
           presenceLoading: false,
         });
-      });
+      });*/
   }
 
   onOverviewClick() {
-    this._auth
+    this.onOverviewClickMockup();
+    /*this._auth
       .fetch(
         this.state.url +
           "/api/courses/" +
@@ -73,7 +78,7 @@ class CourseView extends React.Component {
           courseOverviewClicked: true,
           isLoadingOverview: false,
         });
-      });
+      });*/
   }
 
   render() {
@@ -176,6 +181,27 @@ class CourseView extends React.Component {
         )}
       </div>
     );
+  }
+
+  onLectureClickMockup(data, index) {
+    this.props.changeLecture(data.id);
+    this._apiMock.getLecturesDetails().then((res) => {
+      this.setState({
+        lectureIndex: index + 1,
+        presenceData: res,
+        presenceLoading: false,
+      });
+    });
+  }
+
+  onOverviewClickMockup() {
+    this._apiMock.getCoursesSummary().then((res) => {
+      this.setState({
+        overviewData: res,
+        courseOverviewClicked: true,
+        isLoadingOverview: false,
+      });
+    });
   }
 }
 export default CourseView;

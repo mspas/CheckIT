@@ -11,6 +11,7 @@
         height: 100vh
         background: $lighterblue
         box-shadow: 3px 3px 17px 1px #0000006e
+        transition: all 0.5s ease-in
         .logo
             padding: 10px 20px 10px 10px
         .logged-user
@@ -88,15 +89,22 @@
                         visibility: hidden
                     &::after
                         visibility: hidden                        
-        span
+        .burger-wrap
+            position: absolute
+            right: -50px
+            top: 0
+            z-index: 111
+            background: $lighterblue
+            padding: 20px
+            border-radius: 0 0 40px 0
+            visibility: hidden
             .panel-icon 
-                position: absolute
-                right: 10px
-                top: 10px
                 font-size: 25px
                 visibility: hidden
-                @media screen and ( max-width: 1000px )
+                @media screen and ( max-width: 1350px )
                     visibility: visible
-        @media screen and ( max-width: 1000px )
+            @media screen and ( max-width: 1350px )
+                visibility: visible
+        @media screen and ( max-width: 1350px )
             position: absolute
-            left: -275px
+            left: -310px

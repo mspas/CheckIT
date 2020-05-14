@@ -9,6 +9,7 @@ class WeekSchedule extends React.Component {
   constructor(props) {
     super(props);
     let hours = [];
+
     for (let i = 7; i < 22; i++) {
       let hour = ("0" + i).slice(-2) + ":00";
       hours.push(new Date(dummyDay + hour));
@@ -43,7 +44,11 @@ class WeekSchedule extends React.Component {
 
           let minutes = (endHourTemp - Math.floor(endHourTemp)) * 60;
 
-          let endHour = "" + Math.floor(endHourTemp) + ":" + minutes;
+          let endHour =
+            "" +
+            Math.floor(endHourTemp) +
+            ":" +
+            ("0" + Math.ceil(minutes)).slice(-2);
 
           block.innerHTML =
             "<p>" +

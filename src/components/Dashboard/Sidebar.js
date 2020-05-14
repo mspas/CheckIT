@@ -3,16 +3,18 @@ import "../../styles/sidebar.sass";
 import { Link } from "react-scroll";
 import { Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 
 class Sidebar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       activeFlags: [],
+      sidebarHidden: false,
     };
     this.onCourseClick = this.onCourseClick.bind(this);
     this.onScheduleClick = this.onScheduleClick.bind(this);
+    this.slideSidebar = this.slideSidebar.bind(this);
   }
 
   componentDidMount() {
@@ -66,12 +68,25 @@ class Sidebar extends React.Component {
     this.props.eraseLecture();
   }
 
+  slideSidebar() {
+    this.setState(
+      {
+        sidebarHidden: !this.state.sidebarHidden,
+      },
+      () => {
+        document.getElementById("sidebar").style.left = this.state.sidebarHidden
+          ? "0px"
+          : "-310px";
+      }
+    );
+  }
+
   render() {
     if (this.props.isLoading) {
       return (
         <div className="wrapper">
-          <div className="course-menu">
-            <div className="logo">logo</div>
+          <div id="sidebar" className="course-menu">
+            <div className="logo"></div>
             <p className="title-text">Your courses</p>
             <div className="spinner-wrap center">
               <Spinner
@@ -103,11 +118,15 @@ class Sidebar extends React.Component {
 
     return (
       <div className="wrapper">
-        <div className="course-menu">
-          <div className="logo">logo</div>
+        <div id="sidebar" className="course-menu">
+          <div className="logo"></div>
           <p className="logged-user">Welcome, {this.props.loggedName}</p>
-          <span>
-            <FontAwesomeIcon className="panel-icon" icon={faBars} />
+          <span className="burger-wrap" onClick={this.slideSidebar}>
+            {!this.state.sidebarHidden ? (
+              <FontAwesomeIcon className="panel-icon" icon={faBars} />
+            ) : (
+              <FontAwesomeIcon className="panel-icon" icon={faTimesCircle} />
+            )}
           </span>
           <button className="btn-schedule" onClick={this.onScheduleClick}>
             Your Week Schedule

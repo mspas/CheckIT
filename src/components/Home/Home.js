@@ -39,7 +39,7 @@ class Home extends React.Component {
           <div className="footer-panel">
             <div className="slope slope2"></div>
             <p>
-              Attendance Tracker <span>@2020</span>
+              CheckIT <span>@2020</span>
             </p>
           </div>
         </div>
