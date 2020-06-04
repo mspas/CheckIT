@@ -5,7 +5,7 @@ export default class AuthService {
   constructor(domain) {
     this._apiMock = new ApiServiceMock();
 
-    this.domain = "http://25.23.181.97:8090";
+    this.domain = "http://localhost:8090";
     this.fetch = this.fetch.bind(this);
     this.login = this.login.bind(this);
     this.getUserId = this.getUserId.bind(this);
@@ -14,20 +14,17 @@ export default class AuthService {
   }
 
   login(email, password) {
-    this.setToken(this._apiMock.getExampleToken());
-    return Promise.resolve(this._apiMock.getExampleToken());
-
-    /*return this.fetch(`${this.domain}/login`, {
+    return this.fetch(`/login`, {
       method: "POST",
       body: JSON.stringify({
         email,
         password,
       }),
     }).then((res) => {
-      console.log(res.token);
+      console.log(res);
       this.setToken(res.token);
       return Promise.resolve(res);
-    });*/
+    });
   }
 
   loggedIn() {
@@ -49,7 +46,7 @@ export default class AuthService {
   }
 
   setToken(token) {
-    localStorage.setItem("token", token);
+    if (token !== null) localStorage.setItem("token", token);
   }
 
   getToken() {
@@ -57,13 +54,13 @@ export default class AuthService {
   }
 
   getUserId(token) {
-    return 5;
-    /*try {
+    //return 5;
+    try {
       const decoded = decode(token);
       return decoded.userId;
     } catch (err) {
       return null;
-    }*/
+    }
   }
 
   getName(token) {
@@ -85,11 +82,8 @@ export default class AuthService {
   }
 
   logout(id, logged) {
-    localStorage.removeItem("token");
-    return Promise.resolve(true);
-
-    /*return this.fetch(`${this.domain}/api/logout`, {
-      method: "PATCH",
+    return this.fetch(`/api/logout`, {
+      method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -102,7 +96,7 @@ export default class AuthService {
     }).then((res) => {
       localStorage.removeItem("token");
       return Promise.resolve(res);
-    });*/
+    });
   }
 
   fetch(url, options) {
@@ -115,7 +109,7 @@ export default class AuthService {
       headers["X-Authorization"] = "Bearer " + this.getToken();
     }
 
-    return fetch(url, {
+    return fetch(this.domain + url, {
       headers,
       ...options,
     })

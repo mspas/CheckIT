@@ -14,7 +14,6 @@ class CourseView extends React.Component {
     this._apiMock = new ApiServiceMock();
 
     this.state = {
-      url: "http://25.23.181.97:8090",
       overviewData: null,
       courseOverviewClicked: false,
       isLoadingOverview: true,
@@ -43,12 +42,11 @@ class CourseView extends React.Component {
   }
 
   onLectureClick(data, index, event) {
+    this.props.changeLecture(data.id);
+
     this.onLectureClickMockup(data, index);
-
-    /*this.props.changeLecture(data.id);
-
-    this._auth
-      .fetch(this.state.url + "/api/lectures/" + data.id + "/details", {
+    /*this._auth
+      .fetch("/api/lectures/" + data.id + "/details", {
         method: "GET",
       })
       .then((res) => {
@@ -64,7 +62,6 @@ class CourseView extends React.Component {
     this.onOverviewClickMockup();
     /*this._auth
       .fetch(
-        this.state.url +
           "/api/courses/" +
           this.props.courseData.courseId +
           "/summary",

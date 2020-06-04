@@ -5,12 +5,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import AuthService from "../../services/auth.service";
+import ApiServiceMock from "../../services/api.mock.service";
 
 class SignIn extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { Email: "", Password: "" };
     this._auth = new AuthService();
+    this._authMock = new ApiServiceMock();
+
+    this.state = { Email: "", Password: "" };
   }
 
   handleInputChange = (event) => {
@@ -22,15 +25,16 @@ class SignIn extends React.Component {
 
   onSubmit = (event) => {
     event.preventDefault();
-    this._auth
+    this._auth.setToken(this._authMock.getExampleToken());
+    this.props.history.replace("/dashboard");
+    /*this._auth
       .login(this.state.Email, this.state.Password)
       .then((res) => {
         this.props.history.replace("/dashboard");
       })
       .catch((err) => {
         alert(err);
-      });
-    //this._auth.logout(2, false);
+      });*/
   };
 
   render() {

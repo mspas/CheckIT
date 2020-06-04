@@ -17,7 +17,6 @@ class Dashboard extends React.Component {
     this._data = new DataService();
 
     this.state = {
-      url: "http://25.23.181.97:8090",
       lecturer_id: this._auth.getUserId(this._auth.getToken()),
       loggedName: this._auth.getName(this._auth.getToken()),
       lecturesLoading: false,
@@ -35,16 +34,15 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    this.getDataInitMockup(); //since it's a demo version the api calls are simulated with mockup data previously saved from the acctual api and db
+    //this.initData();
+    this.getDataInitMockup();
+  }
 
-    /*this._auth
-      .fetch(
-        this.state.url +
-          "/api/lecturers/" +
-          this.state.lecturer_id +
-          "/courses",
-        { method: "GET" }
-      )
+  initData() {
+    this._auth
+      .fetch("/api/lecturers/" + this.state.lecturer_id + "/courses", {
+        method: "GET",
+      })
       .then((res) => {
         this.setState({
           courses: res.courses,
@@ -53,13 +51,9 @@ class Dashboard extends React.Component {
       });
 
     this._auth
-      .fetch(
-        this.state.url +
-          "/api/lecturers/" +
-          this.state.lecturer_id +
-          "/schedule",
-        { method: "GET" }
-      )
+      .fetch("/api/lecturers/" + this.state.lecturer_id + "/schedule", {
+        method: "GET",
+      })
       .then((res) => {
         let date1 = new Date(res.schedule[0].date);
         let date2 = new Date(res.schedule[6].date);
@@ -76,7 +70,7 @@ class Dashboard extends React.Component {
           scheduleLoading: false,
           dateString: date,
         });
-      });*/
+      });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -91,9 +85,11 @@ class Dashboard extends React.Component {
   }
 
   handleLogoutClick() {
-    this._auth.logout(localStorage.getItem("id"), false).then((res) => {
+    localStorage.removeItem("token");
+    this.props.history.replace("/login");
+    /*this._auth.logout(localStorage.getItem("id"), false).then((res) => {
       this.props.history.replace("/login");
-    });
+    });*/
   }
 
   getLecturesSet(course_id) {

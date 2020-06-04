@@ -14,10 +14,6 @@ class LecturePresence extends React.Component {
     super(props);
     this._auth = new AuthService();
 
-    this.state = {
-      url: "http://25.23.181.97:8090",
-    };
-
     this.handleExportToPDF = this.handleExportToPDF.bind(this);
     this.onMarkPresenceClick = this.onMarkPresenceClick.bind(this);
   }
@@ -51,12 +47,11 @@ class LecturePresence extends React.Component {
   }
 
   onMarkPresenceClick(data, index) {
-    let lectureId = this.props.presenceData.lectureId;
+    alert("Sorry. Feature turn off in demo version!");
+    /*let lectureId = this.props.presenceData.lectureId;
     let studentId = data.id;
-
-    alert("Funcionality turned off in this demo version");
-    /*this._auth
-      .fetch(this.state.url + "/api/lectures/presence", {
+    this._auth
+      .fetch("/api/lectures/presence", {
         method: "POST",
         body: JSON.stringify({
           lectureId,
