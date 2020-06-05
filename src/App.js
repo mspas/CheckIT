@@ -1,5 +1,11 @@
 import React from "react";
-import { HashRouter, Route, BrowserRouter, Redirect } from "react-router-dom";
+import {
+  HashRouter,
+  Route,
+  BrowserRouter,
+  Redirect,
+  Switch,
+} from "react-router-dom";
 import "./App.sass";
 import Home from "./components/Home/Home";
 import Dashboard from "./components/Dashboard/Dashboard.container";
@@ -9,8 +15,8 @@ class App extends React.Component {
     return (
       <div className="App">
         <main>
-          <HashRouter basename="/">
-            <div>
+          <BrowserRouter basename={process.env.PUBLIC_URL}>
+            <Switch>
               <Route path="/login" component={Home} />
               <Route path="/dashboard" component={Dashboard} />
               <Route
@@ -18,8 +24,8 @@ class App extends React.Component {
                 path="/"
                 render={() => <Redirect to="/dashboard" />}
               />
-            </div>
-          </HashRouter>
+            </Switch>
+          </BrowserRouter>
         </main>
       </div>
     );
