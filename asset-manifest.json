@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/CheckIT/static/css/main.8ca4b1b6.chunk.css",
-    "main.js": "/CheckIT/static/js/main.8219c514.chunk.js",
-    "main.js.map": "/CheckIT/static/js/main.8219c514.chunk.js.map",
-    "runtime-main.js": "/CheckIT/static/js/runtime-main.eeab53a8.js",
-    "runtime-main.js.map": "/CheckIT/static/js/runtime-main.eeab53a8.js.map",
-    "static/css/2.de424728.chunk.css": "/CheckIT/static/css/2.de424728.chunk.css",
-    "static/js/2.2423d5a4.chunk.js": "/CheckIT/static/js/2.2423d5a4.chunk.js",
-    "static/js/2.2423d5a4.chunk.js.map": "/CheckIT/static/js/2.2423d5a4.chunk.js.map",
-    "index.html": "/CheckIT/index.html",
-    "precache-manifest.1ff9b61bda98515b05d7388eeb9827fb.js": "/CheckIT/precache-manifest.1ff9b61bda98515b05d7388eeb9827fb.js",
-    "service-worker.js": "/CheckIT/service-worker.js",
-    "static/css/2.de424728.chunk.css.map": "/CheckIT/static/css/2.de424728.chunk.css.map",
-    "static/css/main.8ca4b1b6.chunk.css.map": "/CheckIT/static/css/main.8ca4b1b6.chunk.css.map",
-    "static/js/2.2423d5a4.chunk.js.LICENSE.txt": "/CheckIT/static/js/2.2423d5a4.chunk.js.LICENSE.txt"
+    "main.css": "/CheckIT-Demo/static/css/main.8ca4b1b6.chunk.css",
+    "main.js": "/CheckIT-Demo/static/js/main.0b8591ff.chunk.js",
+    "main.js.map": "/CheckIT-Demo/static/js/main.0b8591ff.chunk.js.map",
+    "runtime-main.js": "/CheckIT-Demo/static/js/runtime-main.79f15922.js",
+    "runtime-main.js.map": "/CheckIT-Demo/static/js/runtime-main.79f15922.js.map",
+    "static/css/2.de424728.chunk.css": "/CheckIT-Demo/static/css/2.de424728.chunk.css",
+    "static/js/2.9c13fb9c.chunk.js": "/CheckIT-Demo/static/js/2.9c13fb9c.chunk.js",
+    "static/js/2.9c13fb9c.chunk.js.map": "/CheckIT-Demo/static/js/2.9c13fb9c.chunk.js.map",
+    "index.html": "/CheckIT-Demo/index.html",
+    "precache-manifest.b0d525a0be37196e84aab8d3e78fefa6.js": "/CheckIT-Demo/precache-manifest.b0d525a0be37196e84aab8d3e78fefa6.js",
+    "service-worker.js": "/CheckIT-Demo/service-worker.js",
+    "static/css/2.de424728.chunk.css.map": "/CheckIT-Demo/static/css/2.de424728.chunk.css.map",
+    "static/css/main.8ca4b1b6.chunk.css.map": "/CheckIT-Demo/static/css/main.8ca4b1b6.chunk.css.map",
+    "static/js/2.9c13fb9c.chunk.js.LICENSE.txt": "/CheckIT-Demo/static/js/2.9c13fb9c.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.eeab53a8.js",
+    "static/js/runtime-main.79f15922.js",
     "static/css/2.de424728.chunk.css",
-    "static/js/2.2423d5a4.chunk.js",
+    "static/js/2.9c13fb9c.chunk.js",
     "static/css/main.8ca4b1b6.chunk.css",
-    "static/js/main.8219c514.chunk.js"
+    "static/js/main.0b8591ff.chunk.js"
   ]
 }
